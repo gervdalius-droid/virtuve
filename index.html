@@ -311,7 +311,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 'use strict';
 /* ---------------- text ---------------- */
 const T={
-lt:{brand:'Dėdės Baldai',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
+lt:{thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:'Uždengs spinteles: {w} mm',bodyH:'Korpuso aukštis',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
  catBase:'Apatinės spintelės',catWall:'Pakabinamos',catTall:'Aukštos spintos',catRoom:'Patalpa',
  dragHint:'Nutempkite ant sienos arba spustelėkite: atsiras po paskutine.',
  elev:'Sienos vaizdas',plan:'Planas iš viršaus',wall:'Siena',
@@ -346,7 +346,7 @@ lt:{brand:'Dėdės Baldai',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusi
  emptyList:'Kol kas nėra spintelių.',reqTitle:'Virtuvės eskizo užklausa',shape:'Forma',
  tagWall:'Siena',hood:'gartraukis',sink:'kriauklė',hob:'kaitlentė',fridge:'šaldytuvas',
  removed:'Ištrinta',added:'Pridėta'},
-en:{brand:'Dėdės Baldai',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
+en:{thick:'Thickness',level:'Height from floor',autoLvl:'Follow cabinets',wtRun:'Covers the cabinets: {w} mm',bodyH:'Body height',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
  catBase:'Base cabinets',catWall:'Wall cabinets',catTall:'Tall units',catRoom:'Room',
  dragHint:'Drag onto a wall, or click to add it after the last one.',
  elev:'Wall view',plan:'Floor plan',wall:'Wall',
@@ -391,6 +391,7 @@ const CAT={
  base_oven:{g:'base',layer:'base',w:600,lt:'Orkaitė ir kaitlentė',en:'Oven and hob',hob:1,segs:[{k:'oven',r:3.2},{k:'drawer',r:1}]},
  base_dw:{g:'base',layer:'base',w:600,lt:'Indaplovė',en:'Dishwasher',segs:[{k:'dw',r:1}]},
  base_open:{g:'base',layer:'base',w:400,lt:'Atvira lentyna',en:'Open shelf',segs:[{k:'open',r:1}]},
+ worktop:{g:'base',layer:'top',w:1200,lt:'Stalviršis',en:'Worktop'},
  wall_door:{g:'wall',layer:'wall',w:600,lt:'Su durelėmis',en:'Door wall unit',segs:[{k:'door',n:1,hg:'L',r:1}]},
  wall_lift:{g:'wall',layer:'wall',w:800,lt:'Pakeliamos durelės',en:'Lift-up unit',segs:[{k:'lift',r:1}]},
  wall_hood:{g:'wall',layer:'wall',w:600,h:360,lt:'Gartraukio spintelė',en:'Hood unit',hood:1,segs:[{k:'lift',r:1}]},
@@ -415,10 +416,10 @@ const TOPS={
  oak:{lt:'Ąžuolas',en:'Oak',c:'#C29A66'},
  black:{lt:'Juodas akmuo',en:'Black stone',c:'#2A2B2B'}
 };
-const DEPTH={base:600,tall:600,wall:350,window:0,door:0};
-const OCC={base:['F'],wall:['U'],tall:['F','U'],window:['U'],door:['F','U']};
+const DEPTH={base:600,tall:600,wall:350,window:0,door:0,top:620};
+const OCC={base:['F'],wall:['U'],tall:['F','U'],window:['U'],door:['F','U'],top:['T']};
 const WALLS_FOR={I:['A'],L:['A','B'],U:['A','B','C']};
-const LORD={tall:0,base:1,wall:2,door:3,window:4};
+const LORD={tall:0,base:1,top:1.5,wall:2,door:3,window:4};
 const SNAP=70;
 
 /* ---------------- state ---------------- */
@@ -435,7 +436,7 @@ function sample(){
   return [
     mk('tall_fridge','A',0), mk('base_drawers','A',600), mk('base_oven','A',1200),
     mk('base_door','A',1800,{segs:[{k:'drawer',r:1},{k:'door',n:1,hg:'R',r:4}]}),
-    mk('base_dw','A',2400), mk('base_sink','A',3000,{w:600}),
+    mk('base_dw','A',2400), mk('base_sink','A',3000,{w:600}), mk('worktop','A',600,{w:3000}), mk('worktop','B',600,{w:1800}),
     mk('wall_door','A',600), mk('wall_hood','A',1200), mk('wall_door','A',1800,{segs:[{k:'door',n:1,hg:'R',r:1}]}),
     mk('wall_lift','A',2400,{w:800}), mk('wall_door','A',3200,{w:400}),
     mk('base_door','B',600,{segs:[{k:'drawer',r:1},{k:'door',n:1,hg:'L',r:4}]}),
@@ -473,14 +474,29 @@ function wallTop(){return S.dims.wallBottom+S.dims.wallH}
 function vert(it){
   const d=S.dims;
   switch(it.layer){
-    case 'base':return [d.plinth,d.plinth+d.baseH];
+    case 'base':return [d.plinth,d.plinth+(it.h||d.baseH)];
     case 'wall':{const tp=wallTop(); return [tp-(it.h||d.wallH),tp];}
-    case 'tall':return [d.plinth,wallTop()];
+    case 'tall':return [d.plinth,it.h?d.plinth+it.h:wallTop()];
+    case 'top':{const y0=it.y0!=null?it.y0:autoLevel(it); return [y0,y0+(it.th||d.top)];}
     case 'window':return [it.y0,it.y0+it.h];
     case 'door':return [0,it.h];
   }
   return [0,0];
 }
+function autoLevel(it){let m=0; for(const o of S.items) if(o.layer==='base'&&o.wall===it.wall&&o.x<it.x+it.w-1&&o.x+o.w>it.x+1) m=Math.max(m,vert(o)[1]); return m||S.dims.plinth+S.dims.baseH;}
+function topOver(it){const cx=it.x+it.w/2; return S.items.find(o=>o.layer==='top'&&o.wall===it.wall&&o.x<cx&&o.x+o.w>cx);}
+function surfaceTop(it){const o=topOver(it); return o?vert(o)[1]:vert(it)[1];}
+function baseRunAt(wall,along,exId){
+  const iv=S.items.filter(o=>o.layer==='base'&&o.wall===wall).map(o=>[o.x,o.x+o.w]).sort((a,b)=>a[0]-b[0]); const m=[];
+  for(const r of iv){if(m.length&&r[0]<=m[m.length-1][1]+1)m[m.length-1][1]=Math.max(m[m.length-1][1],r[1]); else m.push([r[0],r[1]]);}
+  return m.find(([a,b])=>along>=a-1&&along<=b+1)||null;
+}
+function hLimits(it){const d=S.dims; return it.layer==='base'?[300,1000]:it.layer==='tall'?[1000,S.roomH-d.plinth]:it.layer==='wall'?[200,wallTop()-(d.plinth+d.baseH)]:[0,S.roomH];}
+function hPresets(it){const d=S.dims;
+  if(it.layer==='base') return [580,720,760,800,860];
+  if(it.layer==='tall') return [...new Set([1800,2000,wallTop()-d.plinth,2200,S.roomH-d.plinth])].filter(v=>v<=S.roomH-d.plinth).sort((a,b)=>a-b);
+  return [360,580,720,900];}
+function setH(it,v){const [a,b]=hLimits(it); v=Math.max(a,Math.min(b,Math.round(v))); if(v===Math.round(hOf(it)))return; mut(()=>{it.h=v;});}
 function corners(wallId){
   const ws=activeWalls(), i=ws.indexOf(wallId), res=[]; if(i<0)return res;
   const L=S.walls[wallId];
@@ -605,6 +621,7 @@ function segSVG(sg,x,y,w,h,cf,fin){
 }
 function itemSVG(it,X,Y,W,H,floorTop){
   const fin=FINISH[S.finish], sw=PX(1);
+  if(it.layer==='top'){const tp=TOPS[S.worktop]; return `<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="${tp.c}" stroke="${shade(tp.c,0.55)}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(Y+H)}" width="${r1(W)}" height="26" fill="url(#gUnder)"/>`;}
   if(it.layer==='window'){
     let s=`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" class="r-frame" stroke-width="${PX(1.2)}"/>`;
     const gx=X+50, gy=Y+50, gw=Math.max(10,W-100), gh=Math.max(10,H-100);
@@ -652,6 +669,7 @@ function worktopSVG(a,b,yTop){
 }
 /* line pictograms for the palette (as in the Builder's "Pridėti spintelę" list) */
 function lineIcon(it){
+  if(it.layer==='top'){const W=1200; return `<svg viewBox="-60 -420 1320 1320" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="0" y="0" width="${W}" height="90" vector-effect="non-scaling-stroke"/><path d="M60 90 V560 M600 90 V560 M1140 90 V560" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/></svg>`;}
   const [y0,y1]=vert(it), W=it.w, H=y1-y0, c=CAT[it.t]||{};
   const ln=(x1,y1_,x2,y2)=>`<line x1="${r1(x1)}" y1="${r1(y1_)}" x2="${r1(x2)}" y2="${r1(y2)}"/>`;
   const rc=(x,y,w,h,f)=>`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}"${f?` fill="${f}"`:''}/>`;
@@ -677,7 +695,7 @@ function lineIcon(it){
   return `<svg viewBox="${r1(-pad-(m-vw)/2)} ${r1(top-pad-(m-vh)/2)} ${r1(m)} ${r1(m)}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" style="overflow:visible"><g>${s.replace(/<(line|rect|path)/g,'<$1 vector-effect="non-scaling-stroke"')}</g></svg>`;
 }
 function iconSVG(type){return lineIcon(mk(type,'A',0));}
-function dimsOf(it){const [y0,y1]=vert(it); const h=Math.round(y1-y0); return it.layer==='window'||it.layer==='door'?`${it.w}×${h}`:`${it.w}×${h}×${DEPTH[it.layer]}`;}
+function dimsOf(it){const [y0,y1]=vert(it); const h=Math.round(y1-y0); if(it.layer==='top') return `${it.w}×${h}×620`; return it.layer==='window'||it.layer==='door'?`${it.w}×${h}`:`${it.w}×${h}×${DEPTH[it.layer]}`;}
 /* dimension lines — Builder style: a line with ticks, figures underneath */
 function dimH(a,b,y,label,fs,gap){
   const tk=fs*0.38; let s=`<g class="dim${gap?' gap':''}"><line x1="${r1(a)}" y1="${r1(y)}" x2="${r1(b)}" y2="${r1(y)}"/><line x1="${r1(a)}" y1="${r1(y-tk)}" x2="${r1(a)}" y2="${r1(y+tk)}"/><line x1="${r1(b)}" y1="${r1(y-tk)}" x2="${r1(b)}" y2="${r1(y+tk)}"/>`;
@@ -721,10 +739,9 @@ function renderElev(){
     s+=`<rect class="hatchbg" x="${c.a}" y="${yOf(f1)}" width="${c.b-c.a}" height="${f1-f0}"/>`;
     if(c.occ==='F'){const lbl=t('corner'); const f=Math.min(fs*0.9,(c.b-c.a)/(lbl.length*0.7)); s+=`<text class="cornerlbl" x="${r1((c.a+c.b)/2)}" y="${r1(yOf(Math.min(f1,900)/2))}" font-size="${r1(f)}" text-anchor="middle">${lbl}</text>`;}
   }
-  const runs=items.filter(i=>i.layer==='base').map(i=>[i.x,i.x+i.w]).concat(cs.filter(c=>c.occ==='F'&&!c.tall&&c.b-c.a>=590).map(c=>[c.a,c.b])).sort((a,b)=>a[0]-b[0]);
-  const mr=[]; for(const r of runs){if(mr.length&&r[0]<=mr[mr.length-1][1]+1)mr[mr.length-1][1]=Math.max(mr[mr.length-1][1],r[1]); else mr.push([r[0],r[1]]);}
   const wtY=yOf(d.plinth+d.baseH+d.top);
-  const order=[...items].sort((a,b)=>(a.layer==='window'||a.layer==='door'?0:a.layer==='wall'?2:1)-(b.layer==='window'||b.layer==='door'?0:b.layer==='wall'?2:1));
+  const ord=l=>l==='window'||l==='door'?0:l==='top'?1.5:l==='wall'?2:1;
+  const order=[...items].sort((a,b)=>ord(a.layer)-ord(b.layer));
   let selS='', nums='';
   const opN={}; let wn=0,dn=0; for(const it of [...items].sort((a,b)=>a.x-b.x)){ if(it.layer==='window')opN[it.id]=++wn; if(it.layer==='door')opN[it.id]=++dn; }
   for(const it of order){
@@ -740,8 +757,7 @@ function renderElev(){
     if(tg[it.id]&&W/K>24){const cx=X+W/2, cy=Y+Math.min(PX(18),Hh/2), rr=PX(9); nums+=`<g class="it${sel?' sel':''}" data-id="${it.id}"><circle class="rm-no" cx="${r1(cx)}" cy="${r1(cy)}" r="${r1(rr)}"/><text class="rm-not" x="${r1(cx)}" y="${r1(cy+PX(3.6))}" font-size="${PX(10.5)}" text-anchor="middle">${tg[it.id]}</text></g>`;}
     if(sel){const ex=(it.layer==='base'||it.layer==='tall')?d.plinth:0; selS=`<rect class="selbox" x="${r1(X-sw*1.2)}" y="${r1(Y-sw*1.2)}" width="${r1(W+sw*2.4)}" height="${r1(Hh+ex+sw*2.4)}" rx="${r1(sw)}" pointer-events="none"/>`;}
   }
-  for(const [a,b] of mr) s+=worktopSVG(a,b,wtY);
-  for(const it of items) if(it.layer==='base') s+=topExtras(it,it.x,wtY);
+  for(const it of items) if(it.layer==='base') s+=topExtras(it,it.x,yOf(surfaceTop(it)));
   s+=nums+selS;
   if(U.sel){const si=byId(U.sel); if(si&&si.wall===wid) s+=handlesSVG(si);}
   {const hit=(matchMedia('(pointer:coarse)').matches?30:16)*K, gw=7*K, gl=Math.min(H*0.3,40*K);
@@ -766,8 +782,7 @@ function renderElev(){
   }
   // height chain from what is actually on this wall
   const xa=-padL*0.35, xb=-padL*0.7, lv=new Set([0,H]);
-  if(items.some(i=>i.layer==='base')) lv.add(d.plinth+d.baseH+d.top);
-  for(const i of items){ const [a,b]=vert(i); if(i.layer==='wall'){lv.add(a); lv.add(b);} else if(i.layer==='tall') lv.add(b); }
+  for(const i of items){ const [a,b]=vert(i); if(i.layer==='wall'){lv.add(a); lv.add(b);} else if(i.layer==='tall'||i.layer==='base'||i.layer==='top') lv.add(b); }
   const lvs=[...lv].map(v=>Math.round(v)).filter(v=>v>=0&&v<=H).sort((a,b)=>a-b).filter((v,k,arr)=>k===0||v-arr[k-1]>=1);
   for(let k=0;k<lvs.length-1;k++) s+=dimV(xa,yOf(lvs[k+1]),yOf(lvs[k]),lvs[k+1]-lvs[k],fs);
   if(lvs.length>2) s+=dimV(xb,0,H,H,fs);
@@ -791,7 +806,8 @@ function gapRefs(it){
 function valueChips(it,fs,wtY){
   const H=S.roomH, [y0,y1]=vert(it), X=it.x, W=it.w, Y=H-y1, Hh=y1-y0, c=CAT[it.t]||{};
   let row;
-  if(it.layer==='base') row=wtY-fs*1.7;
+  if(it.layer==='base') row=H-surfaceTop(it)-fs*1.7;
+  else if(it.layer==='top') row=Y-fs*1.7;
   else if(it.layer==='wall') row=Y+Hh+(c.hood?95:0)+fs*1.5;
   else if(it.layer==='window') row=Y+fs*1.7;
   else row=Y+fs*3.2;
@@ -809,7 +825,7 @@ function valueChips(it,fs,wtY){
     mm.forEach((h,i)=>{ if(h>fs*1.4) s+=chipSVG(X+fs*0.6,y+h/2,h,'seg',i,'start',fs,false); y+=h+4; });
   }
   const side=X+fs*0.6;
-  if(it.layer==='wall') s+=chipSVG(X+W-fs*0.6,Y+Hh/2,Hh,'h',null,'end',fs,false);
+  if(it.layer==='wall'||it.layer==='base'||it.layer==='tall') s+=chipSVG(X+W-fs*0.6,Y+Math.min(Hh/2,fs*1.6+Hh*0.25),Hh,'h',null,'end',fs,false);
   if(it.layer==='window'){ s+=chipSVG(side,Y+Hh/2,Hh,'winh',null,'start',fs,false); s+=chipSVG(X+W/2,Y+Hh+32+fs*1.1,it.y0,'sill',null,'middle',fs,true); }
   if(it.layer==='door') s+=chipSVG(side,Y+Hh/2,Hh,'doorh',null,'start',fs,false);
   return s+'</g>';
@@ -827,7 +843,7 @@ function handlesSVG(it){
   }
   if(it.layer==='wall') s+=hg(Y+Hh,'bot');
   if(it.layer==='window'){s+=hg(Y,'top'); s+=hg(Y+Hh,'bot');}
-  if(it.layer==='door') s+=hg(Y,'top');
+  if(it.layer==='door'||it.layer==='base'||it.layer==='tall') s+=hg(Y,'top');
   s+=vg(X,'L')+vg(X+W,'R');
   return s+'</g>';
 }
@@ -852,7 +868,7 @@ function renderPlan(){
   const lp={A:[A/2,-Tw-fs*0.9,0],B:[A+Tw+fs*1.1,B/2,90],C:[A-C/2,B+Tw+fs*1.8,0]};
   for(const w of ws){const [x,y,r]=lp[w]; s+=`<text class="plan-lbl${U.wall===w?' on':''}" data-wall="${w}" x="${r1(x)}" y="${r1(y)}" font-size="${r1(fs)}" text-anchor="middle" ${r?`transform="rotate(90 ${r1(x)} ${r1(y)})"`:''} style="cursor:pointer">${esc(t('wall'))} ${w} · ${S.walls[w]}</text>`;}
   const items=S.items.filter(i=>has(i.wall)).sort((a,b)=>LORD[a.layer]-LORD[b.layer]);
-  let up='', sel='', lbl='';
+  let up='', sel='', lbl='', ext='';
   const front=(w,u0,u1,v,cls,swk)=>{const a=P(w,u0,v), b=P(w,u1,v); return `<line class="plan-front" x1="${r1(a[0])}" y1="${r1(a[1])}" x2="${r1(b[0])}" y2="${r1(b[1])}" stroke-width="${r1(swk*k)}" ${cls||''} pointer-events="none"/>`;};
   for(const it of items){
     const w=it.wall, u0=it.x, u1=it.x+it.w, bad=isBad(it);
@@ -860,10 +876,12 @@ function renderPlan(){
     if(it.layer==='base'){
       s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,600)}" fill="${bad?'#fde6e3':'#e3e7e1'}" stroke="${stroke}" stroke-width="${sw}"/>`+front(w,u0,u1,600,'',3);
       const c=CAT[it.t];
-      if(c.sink) s+=`<polygon points="${poly(w,u0+70,u1-70,90,500)}" fill="#fbfbf9" stroke="#4f5550" stroke-width="${r1(1*k)}" pointer-events="none"/>`;
-      if(c.hob){const cu=(u0+u1)/2; for(const [du,dv] of [[-140,170],[140,170],[-140,420],[140,420]]){const [px,py]=P(w,cu+du,dv); s+=`<circle cx="${r1(px)}" cy="${r1(py)}" r="70" fill="none" stroke="#151617" stroke-width="${r1(1.2*k)}" pointer-events="none"/>`;}}
+      if(c.sink) ext+=`<polygon points="${poly(w,u0+70,u1-70,90,500)}" fill="#fbfbf9" stroke="#4f5550" stroke-width="${r1(1*k)}" pointer-events="none"/>`;
+      if(c.hob){const cu=(u0+u1)/2; for(const [du,dv] of [[-140,170],[140,170],[-140,420],[140,420]]){const [px,py]=P(w,cu+du,dv); ext+=`<circle cx="${r1(px)}" cy="${r1(py)}" r="70" fill="none" stroke="#151617" stroke-width="${r1(1.2*k)}" pointer-events="none"/>`;}}
     } else if(it.layer==='tall'){
       s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,600)}" fill="${bad?'#fde6e3':'#c9cfc8'}" stroke="${stroke}" stroke-width="${sw}"/>`+front(w,u0,u1,600,'',3);
+    } else if(it.layer==='top'){
+      s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,620)}" fill="${tp.c}" fill-opacity=".72" stroke="${bad?'#b4291f':shade(tp.c,0.5)}" stroke-width="${sw}"/>`;
     } else if(it.layer==='wall'){
       up+=`<polygon class="plan-up pf" data-id="${it.id}" points="${poly(w,u0,u1,0,350)}" stroke-width="${sw}"${bad?' style="stroke:#b4291f"':''}/>`+front(w,u0,u1,350,`stroke-dasharray="${r1(5*k)} ${r1(3*k)}"`,1.5);
     } else if(it.layer==='window'){
@@ -879,7 +897,7 @@ function renderPlan(){
       lbl+=`<circle class="plan-no" cx="${r1(px)}" cy="${r1(py)}" r="${r1(rr)}" ${it.id===U.sel?'style="fill:#2448c9"':''} ${it.layer==='wall'?'opacity=".75"':''} pointer-events="none"/><text class="plan-tag" x="${r1(px)}" y="${r1(py+rr*0.38)}" font-size="${r1(rr*1.15)}" text-anchor="middle" pointer-events="none">${tg[it.id]}</text>`;}
     if(it.id===U.sel){const vv=DEPTH[it.layer]||0; sel=`<polygon class="selbox" points="${poly(w,u0,u1,vv?0:-Tw,vv||0)}" pointer-events="none"/>`;}
   }
-  s+=up+sel+lbl;
+  s+=ext+up+sel+lbl;
   s+=`<text class="plan-lbl" x="${r1(minX+fs)}" y="${r1(maxY-fs*0.8)}" font-size="${r1(fs*0.9)}" style="font-weight:400">${esc(t('planLeg'))}</text>`;
   s+='</svg>';
   wrap.innerHTML=s;
@@ -949,10 +967,16 @@ function renderInspector(){
   if(!it){box.innerHTML=`<p class="empty">${esc(t('noSel'))}</p>`; return;}
   const c=CAT[it.t], tg=tags()[it.id]||'';
   let h=`<div class="ihead"><div class="ic">${iconFor(it)}</div><div><h2>${tg?tg+' · ':''}${esc(nm(c))}</h2><div class="tg">${esc(t('wall'))} ${it.wall} · x ${Math.round(it.x)} · ${dimsOf(it)}${isBad(it)?` · <span style="color:var(--warn)">${esc(t('noFit'))}</span>`:''}</div></div></div>`;
-  const wp=it.layer==='window'?[600,900,1200,1500,1800]:it.layer==='door'?[800,900,1000]:[300,400,450,500,600,800,900,1000,1200];
+  const wp=it.layer==='window'?[600,900,1200,1500,1800]:it.layer==='door'?[800,900,1000]:it.layer==='top'?[600,1200,1800,2400,3000]:[300,400,450,500,600,800,900,1000,1200];
   h+=`<div class="fld"><label for="in-w">${esc(t('width'))}</label>${numBox('w',it.w,'mm',50,'min="150" max="4000" step="10"')}<div class="chips">${wp.map(v=>`<button type="button" class="chip" data-act="wpre" data-v="${v}" aria-pressed="${it.w===v}">${v}</button>`).join('')}</div></div>`;
-  if(it.layer==='wall'){
-    h+=`<div class="fld"><span class="lbl">${esc(t('height'))}</span><div class="chips">${[360,580,720,900].map(v=>`<button type="button" class="chip" data-act="hpre" data-v="${v}" aria-pressed="${(it.h||S.dims.wallH)===v}">${v}</button>`).join('')}</div></div>`;
+  if(it.layer==='wall'||it.layer==='base'||it.layer==='tall'){
+    const hv=Math.round(hOf(it)), [ha,hb]=hLimits(it);
+    h+=`<div class="fld"><label for="in-ih">${esc(t('height'))}</label>${numBox('ih',hv,'mm',10,`min="${ha}" max="${hb}" step="10"`)}<div class="chips">${hPresets(it).map(v=>`<button type="button" class="chip" data-act="hpre" data-v="${v}" aria-pressed="${hv===v}">${v}</button>`).join('')}</div></div>`;
+  }
+  if(it.layer==='top'){
+    const th=it.th||S.dims.top, lv=Math.round(vert(it)[0]);
+    h+=`<div class="fld"><span class="lbl">${esc(t('thick'))}</span><div class="chips">${[12,20,28,38,40].map(v=>`<button type="button" class="chip" data-act="thpre" data-v="${v}" aria-pressed="${th===v}">${v}</button>`).join('')}</div></div>`;
+    h+=`<div class="fld"><label for="in-tlev">${esc(t('level'))}</label><div class="row">${numBox('tlev',lv,'mm',10,'min="300" max="1400"')}<button type="button" class="chip txt" data-act="tauto" aria-pressed="${it.y0==null}">${esc(t('autoLvl'))}</button></div></div>`;
   }
   if(it.layer==='window'){
     h+=`<div class="row"><div class="fld"><label for="in-sill">${esc(t('sill'))}</label>${numBox('sill',it.y0,'mm',50,'min="0" max="2200"')}</div><div class="fld"><label for="in-winh">${esc(t('winH'))}</label>${numBox('winh',it.h,'mm',50,'min="300" max="2600"')}</div></div>`;
@@ -1030,7 +1054,7 @@ function reqText(){
   lines.push('');
   for(const it of out) lines.push(`${tg[it.id].padEnd(4)} ${nm(CAT[it.t])} · ${it.w}×${Math.round(hOf(it))} mm · ${fdesc(it)}${isBad(it)?' · '+t('noFit').toUpperCase():''}`);
   const rooms=S.items.filter(i=>activeWalls().includes(i.wall)&&!i.segs);
-  if(rooms.length){lines.push(''); for(const r of rooms) lines.push(`${t('wall')} ${r.wall}: ${nm(CAT[r.t])} ${r.w} mm, x ${Math.round(r.x)}${r.layer==='window'?`, ${t('sill').toLowerCase()} ${r.y0}`:''}`);}
+  if(rooms.length){lines.push(''); for(const r of rooms) lines.push(`${t('wall')} ${r.wall}: ${nm(CAT[r.t])} ${r.layer==='top'?dimsOf(r):r.w} mm, x ${Math.round(r.x)}${r.layer==='window'?`, ${t('sill').toLowerCase()} ${r.y0}`:''}`);}
   if(c.note){lines.push('',`${t('note').split(':')[0]}: ${c.note}`);}
   return lines.join('\n');
 }
@@ -1088,12 +1112,13 @@ function pdMove(e){
   const tmp=mk(PD.t,wall,0); tmp.id='__tmp';
   const sn=snapX(tmp,along-tmp.w/2,wall,14*(inPlan?PK:K));
   tmp.x=clampX(tmp,sn.x);
-  let bad=isBad(tmp), fit=null;
+  let bad=isBad(tmp), fit=null, run=null;
+  if(tmp.layer==='top'){run=baseRunAt(wall,along); if(run){const o={...tmp,x:Math.round(run[0]),w:Math.round(run[1]-run[0])}; if(!isBad(o)){tmp.x=o.x; tmp.w=o.w; bad=false;} else run=null;}}
   if(bad){const g=freeGaps(tmp,wall).find(([a,b])=>along>=a&&along<=b); if(g&&g[1]-g[0]>=limW(tmp)[0]&&g[1]-g[0]<tmp.w){fit=Math.floor(g[1]-g[0]); tmp.x=Math.round(g[0]); tmp.w=fit; bad=isBad(tmp);}}
-  PD.cand={x:tmp.x,w:tmp.w,bad,fit,wall};
+  PD.cand={x:tmp.x,w:tmp.w,bad,fit,wall,run};
   const [y0,y1]=vert(tmp), H=S.roomH;
   if(pv) pv.innerHTML=`<rect class="${bad?'pv-bad':'pv-ok'}" x="${tmp.x}" y="${H-y1}" width="${tmp.w}" height="${y1-y0}"/>`;
-  tipL(e,{bad,lines:[`${nm(CAT[PD.t])} → ${t('wall')} ${wall} · ${t('fromStart').replace('{x}',tmp.x)}`+(sn.why&&!fit?' · '+t('snap_'+sn.why):''), fit?t('fitTo').replace(/\{w\}/g,fit):bad?t('hit'):t('dropAdd')]});
+  tipL(e,{bad,lines:[`${nm(CAT[PD.t])} → ${t('wall')} ${wall} · ${t('fromStart').replace('{x}',tmp.x)}`+(sn.why&&!fit?' · '+t('snap_'+sn.why):''), run?t('wtRun').replace('{w}',tmp.w):fit?t('fitTo').replace(/\{w\}/g,fit):bad?t('hit'):t('dropAdd')]});
 }
 function pdUp(e){
   if(!PD)return; const p=PD; PD=null; if(p.ghost)p.ghost.remove(); const pv=$('#pv'); if(pv)pv.innerHTML=''; tipL(null);
@@ -1103,7 +1128,9 @@ function pdUp(e){
     mut(()=>{const it=mk(p.t,c.wall||U.wall,c.x,{w:c.w}); S.items.push(it); U.sel=it.id; U.wall=it.wall; if(it.segs)U.tab='cab';});
     if(c.bad) toast(t('hitDrop'));
   } else {
-    const tmp=mk(p.t,U.wall,0); const sp=findSpot(tmp,appendX(tmp,U.wall),U.wall);
+    const tmp=mk(p.t,U.wall,0);
+    if(tmp.layer==='top'){const bs=S.items.filter(o=>o.layer==='base'&&o.wall===U.wall); if(bs.length){const a=Math.min(...bs.map(o=>o.x)), b=Math.max(...bs.map(o=>o.x+o.w)); const o={...tmp,x:a,w:b-a}; if(!isBad(o)){mut(()=>{tmp.x=a; tmp.w=b-a; S.items.push(tmp); U.sel=tmp.id; U.tab='cab';}); return;}}}
+    const sp=findSpot(tmp,appendX(tmp,U.wall),U.wall);
     if(sp==null){toast(t('noSpace')); return;}
     mut(()=>{tmp.x=sp; S.items.push(tmp); U.sel=tmp.id; U.tab='cab';});
   }
@@ -1170,7 +1197,9 @@ insp.addEventListener('click',e=>{
   }
   switch(act){
     case 'wpre': if(it)setW(it,+v); break;
-    case 'hpre': if(it)mut(()=>{it.h=+v;}); break;
+    case 'hpre': if(it)setH(it,+v); break;
+    case 'thpre': if(it)mut(()=>{it.th=+v;}); break;
+    case 'tauto': if(it)mut(()=>{delete it.y0;}); break;
     case 'preset': if(it)mut(()=>{it.segs=clone(presetsFor(it)[i].s);}); break;
     case 'sup': if(it&&i>0)mut(()=>{const s=it.segs; [s[i-1],s[i]]=[s[i],s[i-1]];}); break;
     case 'sdn': if(it&&i<it.segs.length-1)mut(()=>{const s=it.segs; [s[i+1],s[i]]=[s[i],s[i+1]];}); break;
@@ -1199,6 +1228,8 @@ insp.addEventListener('click',e=>{
 insp.addEventListener('change',e=>{
   const el=e.target; const act=el.dataset.act; if(!act)return; const it=U.sel&&byId(U.sel), v=+el.value, i=+el.dataset.i;
   if(act==='w'&&it){setW(it,v); return;}
+  if(act==='ih'&&it){setH(it,v); return;}
+  if(act==='tlev'&&it){mut(()=>{it.y0=Math.max(300,Math.min(1400,Math.round(v)));}); return;}
   if(act==='sill'&&it){mut(()=>{it.y0=Math.max(0,Math.min(2400,Math.round(v)));}); return;}
   if(act==='winh'&&it){mut(()=>{it.h=Math.max(300,Math.min(2600,Math.round(v)));}); return;}
   if(act==='doorh'&&it){mut(()=>{it.h=Math.max(1800,Math.min(2600,Math.round(v)));}); return;}
@@ -1230,7 +1261,7 @@ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{renderEl
 const STDW=[300,400,450,500,600,800,900,1000,1200];
 const WSTD=[360,580,720,900];
 let RD=null;
-function limW(it){return it.layer==='window'?[300,4000]:it.layer==='door'?[600,1400]:[150,1500];}
+function limW(it){return it.layer==='window'?[300,4000]:it.layer==='door'?[600,1400]:it.layer==='top'?[200,6000]:[150,1500];}
 function neigh(it){let iv=[]; for(const o of OCC[it.layer]) iv=iv.concat(intervals(it.wall,o,it.id)); return iv;}
 function edgesOn(it){const c=[]; for(const o of S.items) if(o.wall===it.wall&&o.id!==it.id) c.push(o.x,o.x+o.w); for(const k of corners(it.wall)) c.push(k.a,k.b); return c;}
 function nearest(v,c,tol){let b=null,bd=tol; for(const x of c){const d=Math.abs(x-v); if(d<=bd){bd=d;b=x;}} return b;}
@@ -1239,7 +1270,7 @@ function startResize(e,hd){
   const h=hd.dataset.h, it=h==='wall'?null:byId(U.sel);
   if(h!=='wall'&&!it)return;
   RD={h,i:+hd.dataset.i,id:it&&it.id,cx:e.clientX,cy:e.clientY,k:K,moved:false,L0:S.walls[U.wall],wall:U.wall};
-  if(it){RD.x0=it.x; RD.w0=it.w; RD.h0=it.h||(it.layer==='wall'?S.dims.wallH:0); RD.y00=it.y0; if(it.segs){RD.mm0=segMM(it); RD.r0=it.segs.map(q=>q.r);}}
+  if(it){RD.x0=it.x; RD.w0=it.w; RD.h0=(it.layer==='window'||it.layer==='door')?it.h:Math.round(hOf(it)); RD.y00=it.y0; if(it.segs){RD.mm0=segMM(it); RD.r0=it.segs.map(q=>q.r);}}
   try{$('#elevWrap').setPointerCapture(e.pointerId);}catch(_){}
   e.preventDefault();
 }
@@ -1278,6 +1309,9 @@ function rdMove(e){
     } else if(RD.h==='bot'&&it.layer==='window'){
       const top=RD.y00+RD.h0; let y0=Math.round((RD.y00-dy)/10)*10; y0=Math.max(0,Math.min(top-300,y0));
       it.y0=y0; it.h=top-y0; label=`${t('sill')}: ${it.y0} mm`;
+    } else if(RD.h==='top'&&(it.layer==='base'||it.layer==='tall')){
+      const [a,b]=hLimits(it); let h=RD.h0-dy; const sn=nearest(h,hPresets(it),Math.max(20,6*RD.k)); h=sn!=null?sn:Math.round(h/10)*10;
+      it.h=Math.max(a,Math.min(b,h)); label=`${t('height')}: ${it.h} mm`;
     } else if(RD.h==='top'){
       let h=Math.round((RD.h0-dy)/10)*10;
       if(it.layer==='window') h=Math.max(300,Math.min(S.roomH-it.y0,h)); else h=Math.max(1800,Math.min(S.roomH,h));
@@ -1354,7 +1388,7 @@ function applyEd(e,v){
     case 'gapL':{const {lref}=gapRefs(it); const x=lref+Math.max(0,v); if(fitsAt(it,x)) mut(()=>{it.x=x;}); else fail(); break;}
     case 'gapR':{const {rref}=gapRefs(it); const x=rref-Math.max(0,v)-it.w; if(fitsAt(it,x)) mut(()=>{it.x=x;}); else fail(); break;}
     case 'seg': setSegMM(it,e.i,v); break;
-    case 'h':{const d=S.dims; mut(()=>{it.h=Math.max(200,Math.min(wallTop()-(d.plinth+d.baseH+d.top),v));}); break;}
+    case 'h': setH(it,v); break;
     case 'winh': mut(()=>{it.h=Math.max(300,Math.min(S.roomH-it.y0,v));}); break;
     case 'sill': mut(()=>{it.y0=Math.max(0,Math.min(S.roomH-300,v)); it.h=Math.max(300,Math.min(S.roomH-it.y0,it.h));}); break;
     case 'doorh': mut(()=>{it.h=Math.max(1800,Math.min(S.roomH,v));}); break;
@@ -1422,7 +1456,9 @@ function build3D(){
     if(!ws.includes(it.wall))continue;
     const g=new THREE.Group(); g.userData.id=it.id; wg[it.wall].add(g);
     const [y0,y1]=vert(it), X=it.x, W=it.w, Hh=y1-y0, D=DEPTH[it.layer], c=CAT[it.t]||{};
-    if(it.layer==='window'){
+    if(it.layer==='top'){
+      box(g,W,Hh,620,X+W/2,y0+Hh/2,310,topm);
+    } else if(it.layer==='window'){
       const fr=mat('#F4F3EF',{roughness:.6}), gl=mat('#9EC3D2',{roughness:.05,metalness:.1,transparent:true,opacity:.45});
       box(g,W-80,Hh-80,6,X+W/2,y0+Hh/2,4,gl,false);
       const tk=55; box(g,W,tk,50,X+W/2,y1-tk/2,25,fr); box(g,W,tk,50,X+W/2,y0+tk/2,25,fr); box(g,tk,Hh,50,X+tk/2,y0+Hh/2,25,fr); box(g,tk,Hh,50,X+W-tk/2,y0+Hh/2,25,fr);
@@ -1463,8 +1499,7 @@ function build3D(){
         yt=yb-4;
       }
       if(it.layer==='base'){
-        box(g,W,d.top,620,X+W/2,y1+d.top/2,310,topm);
-        const tY=y1+d.top;
+        const tY=surfaceTop(it);
         if(c.sink){box(g,W-160,4,420,X+W/2,tY+1,320,steel,false); const cx=X+W/2; const p=new THREE.Mesh(new THREE.CylinderGeometry(14,14,300,14),steel); p.position.set(cx,tY+150,110); p.castShadow=true; g.add(p); box(g,28,28,210,cx,tY+300,205,steel);}
         if(c.hob) box(g,Math.min(580,W-30),6,510,X+W/2,tY+3,320,blk,false);
       }
