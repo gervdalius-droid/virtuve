@@ -1,6 +1,6 @@
-# Virtuvės eskizas
+# Baldų eskizas
 
-Customer kitchen sketcher for Dėdės Baldai. Customers drag cabinets onto their walls, set drawers and doors, choose colours, check the 3D view and copy a quote request.
+Customer kitchen and wardrobe sketcher for Dėdės Baldai. Customers drag cabinets onto their walls, set drawers and doors, choose colours, check the 3D view and copy a quote request.
 
 - Live file: https://gervdalius-droid.github.io/virtuve/
 - Shown on dedesbaldai.lt through an Embed code block (iframe).
