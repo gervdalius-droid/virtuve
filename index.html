@@ -210,6 +210,18 @@ button{cursor:pointer}
 .swatch span{font-size:10.5px;line-height:1.15;text-align:center;color:var(--muted)}
 .swatch[aria-pressed="true"] i{outline:2px solid var(--accent);outline-offset:2px}
 .swatch[aria-pressed="true"] span{color:var(--ink);font-weight:600}
+.looks{display:flex;flex-direction:column;gap:8px}
+.look{display:grid;grid-template-columns:38px minmax(0,1fr);gap:4px 10px;align-items:center;padding:8px;border:1px solid var(--line2);border-radius:var(--r);background:var(--panel)}
+.look.drop{border-color:var(--accent);background:var(--accent-soft)}
+.look b{font-size:13.5px;min-width:0}
+.lk-sw{grid-row:span 2;width:38px;height:38px;border-radius:6px;border:1px solid var(--line2);background-size:cover;background-position:center}
+.lk-acts{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.lk-acts .btn.sm,.btn.sm{padding:4px 8px;font-size:12px}
+.lk-acts .btn.sm.on{border-color:var(--ok);color:var(--ok)}
+.lk-col{width:30px;height:28px;padding:0 2px;border:1px solid var(--line2);border-radius:6px;background:var(--panel);cursor:pointer}
+.lk-mm{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--muted)}
+.lk-mm input{width:58px;border:1px solid var(--line2);border-radius:5px;padding:4px 6px;font:600 12px var(--f-mono);text-align:right;background:var(--panel)}
+.xbtn{min-width:26px;height:26px;border:1px solid color-mix(in srgb,var(--bad) 35%,var(--line2));background:var(--bad-bg);color:var(--bad);border-radius:6px;font-size:13px;line-height:1;padding:0}
 .lay{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .lay button{border:1px solid var(--line2);background:var(--panel);border-radius:8px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12px;font-weight:600}
 .lay button svg{width:44px;height:30px}
@@ -311,7 +323,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 'use strict';
 /* ---------------- text ---------------- */
 const T={
-lt:{thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:'Uždengs spinteles: {w} mm',bodyH:'Korpuso aukštis',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
+lt:{lookT:'Išvaizda 3D vaizde',lookL:'Įkelkite plokštės dekoro nuotrauką (tekstūrą), įklijuokite ją iš iškarpinės (Įklijuoti arba Ctrl+V), nutempkite ant medžiagos arba pasirinkite spalvą: tokie bus priekio, plano ir 3D vaizdai. Nuotrauka dedama per visą kiekvieną detalę; išjungus „Per visą detalę“ ji kartojama tikru dydžiu („Raštas“: kiek mm plokštės apima nuotraukos plotis). ↻ – kai nuotraukoje rievės eina skersai.',lookUp:'Įkelti tekstūrą',lookChange:'Keisti',lookPaste:'Įklijuoti',lookPasteT:'Įklijuoti paveikslėlį iš iškarpinės (nukopijuotą nuotrauką arba ekrano iškarpą)',lookCol:'Spalva',lookFit:'Per visą detalę',lookFitT:'Nuotrauka dedama per visą kiekvieną detalę (be kartojimo, kraštai apkerpami). Išjungus – kartojama tikru dydžiu: nurodykite, kiek mm plokštės apima nuotraukos plotis.',lookMm:'Raštas',lookRot:'Pasukti raštą 90°',lookRm:'Pašalinti išvaizdą',lookBad:'Nepavyko perskaityti paveikslėlio',lookFull:'Nepavyko išsaugoti: naršyklės atmintis pilna. Įkelkite mažesnę nuotrauką.',lookCtrlV:'Paspauskite Ctrl+V: paveikslėlis bus įklijuotas į „{n}“',lookNoImg:'Iškarpinėje nėra paveikslėlio. Nukopijuokite nuotrauką (dešinys pelės mygtukas → Kopijuoti paveikslėlį) arba padarykite ekrano iškarpą.',lookPick:'Kuriai medžiagai? Spauskite „Įklijuoti“ prie medžiagos, tada Ctrl+V.',lookTex:'tekstūra',lk_front:'Fasadai',lk_carc:'Korpusas',lk_top:'Stalviršis',quick:'Greitas pasirinkimas',thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:'Uždengs spinteles: {w} mm',bodyH:'Korpuso aukštis',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
  catBase:'Apatinės spintelės',catWall:'Pakabinamos',catTall:'Aukštos spintos',catRoom:'Patalpa',
  dragHint:'Nutempkite ant sienos arba spustelėkite: atsiras po paskutine.',
  elev:'Sienos vaizdas',plan:'Planas iš viršaus',wall:'Siena',
@@ -346,7 +358,7 @@ lt:{thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:
  emptyList:'Kol kas nėra spintelių.',reqTitle:'Virtuvės eskizo užklausa',shape:'Forma',
  tagWall:'Siena',hood:'gartraukis',sink:'kriauklė',hob:'kaitlentė',fridge:'šaldytuvas',
  removed:'Ištrinta',added:'Pridėta'},
-en:{thick:'Thickness',level:'Height from floor',autoLvl:'Follow cabinets',wtRun:'Covers the cabinets: {w} mm',bodyH:'Body height',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
+en:{lookT:'Look in the 3D views',lookL:'Upload a photo of the board decor (texture), paste it from the clipboard (Paste or Ctrl+V), drop it on a material, or pick a colour: the front, plan and 3D views follow it. The photo is laid once over each board; with “Over the whole board” off it repeats at its real size (“Pattern”: how many mm of board the photo’s width covers). ↻ for a photo whose grain runs across.',lookUp:'Upload texture',lookChange:'Change',lookPaste:'Paste',lookPasteT:'Paste an image from the clipboard (a copied photo or a screenshot)',lookCol:'Colour',lookFit:'Over the whole board',lookFitT:'The photo is laid once over each board (no repeats, the edges cropped). Off: it repeats at its real size: enter how many mm of board the photo’s width covers.',lookMm:'Pattern',lookRot:'Rotate the pattern 90°',lookRm:'Remove the look',lookBad:'Could not read the image',lookFull:'Could not save: the browser storage is full. Upload a smaller photo.',lookCtrlV:'Press Ctrl+V: the image goes to “{n}”',lookNoImg:'There is no image on the clipboard. Copy a photo (right-click → Copy image) or take a screenshot.',lookPick:'Which material? Click “Paste” next to a material, then Ctrl+V.',lookTex:'texture',lk_front:'Fronts',lk_carc:'Carcass',lk_top:'Worktop',quick:'Quick picks',thick:'Thickness',level:'Height from floor',autoLvl:'Follow cabinets',wtRun:'Covers the cabinets: {w} mm',bodyH:'Body height',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
  catBase:'Base cabinets',catWall:'Wall cabinets',catTall:'Tall units',catRoom:'Room',
  dragHint:'Drag onto a wall, or click to add it after the last one.',
  elev:'Wall view',plan:'Floor plan',wall:'Wall',
@@ -448,7 +460,7 @@ function sample(){
 function defaultState(){
   return {v:1,example:true,layout:'L',walls:{A:3600,B:2400,C:3000},roomH:2600,
     dims:{plinth:100,baseH:720,top:38,wallBottom:1420,wallH:720},
-    finish:'white',worktop:'oak',handle:'bar',contact:{name:'',phone:'',email:'',note:''},items:sample()};
+    finish:'white',worktop:'oak',handle:'bar',look:{},contact:{name:'',phone:'',email:'',note:''},items:sample()};
 }
 let S=defaultState();
 const U={wall:'A',sel:null,tab:'room',lang:'lt',undo:[],redo:[],view:'wall',zoom:1};
@@ -563,6 +575,103 @@ function tags(){
 function segAvail(it){const [y0,y1]=vert(it); const n=(it.segs||[]).length; return (y1-y0)-4-4*Math.max(0,n-1);}
 function segMM(it){const A=segAvail(it), R=it.segs.reduce((a,b)=>a+b.r,0)||1; return it.segs.map(s=>A*s.r/R);}
 
+
+/* ---------------- appearance (as Builder's "Išvaizda 3D vaizde") ----------------
+   S.look[m] = {color, tex:<id>, fit, mm, rot, ar, avg} for m in front | carc | top.
+   Photos live in TEX (own storage key) so undo snapshots stay small. */
+const LOOKS=['front','carc','top'];
+const TKEY='db-kitchen-sketch-tex-v1';
+let TEX={}; try{TEX=JSON.parse(localStorage.getItem(TKEY)||'{}')||{};}catch(e){TEX={};}
+const BLOBS={};
+function saveTex(){const used=new Set(); for(const m of LOOKS){const l=S.look&&S.look[m]; if(l&&l.tex)used.add(l.tex);} for(const st of U.undo.concat(U.redo)){const re=/"tex":"(tx[a-z0-9]+)"/g; let mm; while((mm=re.exec(st)))used.add(mm[1]);}
+  for(const k of Object.keys(TEX)) if(!used.has(k)) delete TEX[k];
+  try{localStorage.setItem(TKEY,JSON.stringify(TEX)); return true;}catch(e){return false;}}
+function texURL(id){ if(!id||!TEX[id])return null; if(BLOBS[id])return BLOBS[id];
+  try{const d=TEX[id], b64=d.slice(d.indexOf(',')+1), bin=atob(b64), u=new Uint8Array(bin.length); for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); BLOBS[id]=URL.createObjectURL(new Blob([u],{type:'image/jpeg'}));}catch(e){BLOBS[id]=TEX[id];}
+  return BLOBS[id]; }
+function lk(m){const l=S.look&&S.look[m]; return l&&(l.color||(l.tex&&TEX[l.tex]))?l:null;}
+function lookColor(m){const l=lk(m); if(l&&l.tex&&l.avg)return l.avg; if(l&&l.color)return l.color; return m==='front'?FINISH[S.finish].c:m==='top'?TOPS[S.worktop].c:CARC;}
+function lookHandle(){const c=lookColor('front'); const n=parseInt(c.slice(1),16), L=0.3*(n>>16)+0.59*((n>>8)&255)+0.11*(n&255); return L<110?'#d8dee6':'#3b3b38';}
+/* SVG fill for a board of material m in box (x,y,w,h): a colour, or the photo laid per board (fit) / tiled at real size */
+function lookPaint(m,x,y,w,h){
+  const l=lk(m), col=lookColor(m), base=`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="${col}"/>`;
+  if(!l||!l.tex)return base;
+  const u=texURL(l.tex); if(!u)return base;
+  if(l.fit!==false){
+    if(l.rot){const cx=x+w/2, cy=y+h/2; return base+`<image href="${u}" x="${r1(cx-h/2)}" y="${r1(cy-w/2)}" width="${r1(h)}" height="${r1(w)}" preserveAspectRatio="xMidYMid slice" transform="rotate(90 ${r1(cx)} ${r1(cy)})"/>`;}
+    return base+`<image href="${u}" x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" preserveAspectRatio="xMidYMid slice"/>`;
+  }
+  return base+`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="url(#lk-${m})"/>`;
+}
+function lookDefs(){let s='';
+  for(const m of LOOKS){const l=lk(m); if(!l||!l.tex||l.fit!==false)continue; const u=texURL(l.tex); if(!u)continue;
+    const pw=Math.max(50,+l.mm||1000), ph=pw*(l.ar||1);
+    s+=`<pattern id="lk-${m}" patternUnits="userSpaceOnUse" width="${r1(pw)}" height="${r1(ph)}"${l.rot?' patternTransform="rotate(90)"':''}><image href="${u}" width="${r1(pw)}" height="${r1(ph)}" preserveAspectRatio="none"/></pattern>`;}
+  return s;}
+/* reading a photo: trim plain margins, shrink to ≤1280 px JPEG, average colour for plan and swatch */
+function trimmed(im,w,h){
+  try{const k=Math.min(1,400/Math.max(w,h)), sw=Math.max(1,Math.round(w*k)), sh=Math.max(1,Math.round(h*k)), cv=document.createElement('canvas'); cv.width=sw; cv.height=sh;
+    const cx=cv.getContext('2d'); cx.drawImage(im,0,0,sw,sh); const d=cx.getImageData(0,0,sw,sh).data, lum=(x,y)=>{const o=(y*sw+x)*4; return 0.3*d[o]+0.59*d[o+1]+0.11*d[o+2];};
+    const flat=(n,get)=>{let m=0,q=0; for(let i=0;i<n;i++){const v=get(i); m+=v; q+=v*v;} m/=n; return Math.sqrt(Math.max(0,q/n-m*m))<4;};
+    let x0=0,x1=sw-1,y0=0,y1=sh-1;
+    while(y0<sh/4&&flat(sw,i=>lum(i,y0)))y0++; while(y1>sh*3/4&&flat(sw,i=>lum(i,y1)))y1--;
+    while(x0<sw/4&&flat(y1-y0+1,i=>lum(x0,y0+i)))x0++; while(x1>sw*3/4&&flat(y1-y0+1,i=>lum(x1,y0+i)))x1--;
+    if(!x0&&!y0&&x1===sw-1&&y1===sh-1)return {c:im,w,h};
+    const X0=Math.ceil((x0+1)/k), Y0=Math.ceil((y0+1)/k), X1=Math.floor(x1/k), Y1=Math.floor(y1/k), out=document.createElement('canvas');
+    out.width=Math.max(1,X1-X0); out.height=Math.max(1,Y1-Y0); out.getContext('2d').drawImage(im,X0,Y0,out.width,out.height,0,0,out.width,out.height);
+    return {c:out,w:out.width,h:out.height};
+  }catch(e){return {c:im,w,h};}
+}
+function lookTexture(m,file){
+  if(!file)return; const rd=new FileReader();
+  rd.onload=()=>{const im=new Image();
+    im.onload=()=>{try{let w=im.naturalWidth||im.width, h=im.naturalHeight||im.height;
+        const src=trimmed(im,w,h); w=src.w; h=src.h;
+        const shrink=max=>{const k=Math.min(1,max/Math.max(w,h,1)), cv=document.createElement('canvas'); cv.width=Math.max(1,Math.round(w*k)); cv.height=Math.max(1,Math.round(h*k)); const cx=cv.getContext('2d'); cx.imageSmoothingQuality='high'; cx.fillStyle='#fff'; cx.fillRect(0,0,cv.width,cv.height); cx.drawImage(src.c,0,0,cv.width,cv.height); return cv;};
+        let cv=shrink(1280), url=cv.toDataURL('image/jpeg',0.86); if(url.length>700000){cv=shrink(960); url=cv.toDataURL('image/jpeg',0.8);}
+        const a=document.createElement('canvas'); a.width=a.height=1; const ax=a.getContext('2d'); ax.drawImage(cv,0,0,1,1); const px=ax.getImageData(0,0,1,1).data;
+        const avg='#'+[px[0],px[1],px[2]].map(v=>v.toString(16).padStart(2,'0')).join('');
+        const id='tx'+uid(); TEX[id]=url;
+        if(!lookSet(m,l=>{l.tex=id; l.color=''; l.ar=cv.height/cv.width; l.avg=avg; if(!(+l.mm>0))l.mm=1000; if(l.fit==null)l.fit=true;})){undo(); U.redo.pop(); delete TEX[id]; saveTex(); renderTabs(); toast(t('lookFull'));}
+      }catch(e){toast(t('lookBad'));}};
+    im.onerror=()=>toast(t('lookBad')); im.src=rd.result;};
+  rd.onerror=()=>toast(t('lookBad')); rd.readAsDataURL(file);
+}
+function lookSet(m,fn){if(typeof G3!=='undefined'&&G3)G3.texCache={}; mut(()=>{S.look=S.look||{}; const l=Object.assign({},S.look[m]||{}); fn(l); if(!l.tex&&!l.color)delete S.look[m]; else S.look[m]=l;}); return saveTex();}
+let pasteTo=null;
+function lookPaste(m){
+  pasteTo={m,until:Date.now()+60000};
+  const ask=()=>toast(t('lookCtrlV').replace('{n}',t('lk_'+m)));
+  if(!(navigator.clipboard&&navigator.clipboard.read)){ask(); return;}
+  navigator.clipboard.read().then(items=>{
+    for(const it of items){const ty=it.types.find(x=>/^image\//.test(x)); if(ty) return it.getType(ty).then(b=>{pasteTo=null; lookTexture(m,b);});}
+    toast(t('lookNoImg'));
+  }).catch(ask);
+}
+function imageOf(list){for(let i=0;list&&i<list.length;i++){const it=list[i], f=it.getAsFile?(it.kind==='file'&&/^image\//.test(it.type)?it.getAsFile():null):(/^image\//.test(it.type)?it:null); if(f)return f;} return null;}
+document.addEventListener('paste',e=>{
+  if(!e.clipboardData)return; const f=imageOf(e.clipboardData.items)||imageOf(e.clipboardData.files); if(!f)return;
+  let to=pasteTo&&pasteTo.until>Date.now()?pasteTo.m:null; const ae=document.activeElement, row=ae&&ae.closest&&ae.closest('[data-look]');
+  if(row)to=row.dataset.look; if(!to){if(document.querySelector('[data-look]'))toast(t('lookPick')); return;}
+  e.preventDefault(); pasteTo=null; lookTexture(to,f);
+});
+document.addEventListener('dragover',e=>{const row=e.target&&e.target.closest&&e.target.closest('[data-look]'); if(!row||!e.dataTransfer||![].includes.call(e.dataTransfer.types||[],'Files'))return; e.preventDefault(); e.dataTransfer.dropEffect='copy'; row.classList.add('drop');});
+document.addEventListener('dragleave',e=>{const row=e.target&&e.target.closest&&e.target.closest('[data-look]'); if(row)row.classList.remove('drop');});
+document.addEventListener('drop',e=>{const row=e.target&&e.target.closest&&e.target.closest('[data-look]'); if(!row||!e.dataTransfer)return; e.preventDefault(); row.classList.remove('drop'); const f=imageOf(e.dataTransfer.files); if(f)lookTexture(row.dataset.look,f); else toast(t('lookNoImg'));});
+function lookBlock(){
+  return `<div class="looks">`+LOOKS.map(m=>{
+    const l=(S.look&&S.look[m])||{}, has=!!(l.tex&&TEX[l.tex]), col=lookColor(m), u=has?texURL(l.tex):null, id='f-look-'+m;
+    return `<div class="look" data-look="${m}" tabindex="-1"><span class="lk-sw" style="background-color:${col}${u?`;background-image:url(${u})`:''}"></span><b>${esc(t('lk_'+m))}</b><span class="lk-acts">`+
+      `<label class="btn sm" for="${id}">${esc(has?t('lookChange'):t('lookUp'))}</label><input id="${id}" type="file" accept="image/*" data-lookfile="${m}" hidden>`+
+      `<button type="button" class="btn sm" data-act="lookpaste" data-v="${m}" title="${esc(t('lookPasteT'))}">${esc(t('lookPaste'))}</button>`+
+      `<input type="color" class="lk-col" id="lk-col-${m}" value="${/^#[0-9a-f]{6}$/i.test(col)?col:'#e5e2da'}" data-lookcol="${m}" title="${esc(t('lookCol'))}" aria-label="${esc(t('lookCol')+' · '+t('lk_'+m))}">`+
+      (has?`<button type="button" class="btn sm${l.fit!==false?' on':''}" data-act="lookfit" data-v="${m}" aria-pressed="${l.fit!==false}" title="${esc(t('lookFitT'))}">${esc(t('lookFit'))}</button>`+
+        (l.fit===false?`<label class="lk-mm" title="${esc(t('lookFitT'))}"><span>${esc(t('lookMm'))}</span><input id="lk-mm-${m}" type="text" inputmode="decimal" value="${esc(l.mm||1000)}" data-lookmm="${m}"><span class="unit">mm</span></label>`:'')+
+        `<button type="button" class="btn sm${l.rot?' on':''}" data-act="lookrot" data-v="${m}" aria-pressed="${!!l.rot}" title="${esc(t('lookRot'))}">↻ 90°</button>`:'')+
+      ((has||l.color)?`<button type="button" class="xbtn" data-act="lookrm" data-v="${m}" title="${esc(t('lookRm'))}" aria-label="${esc(t('lookRm')+' · '+t('lk_'+m))}">✕</button>`:'')+`</span></div>`;
+  }).join('')+`</div>`;
+}
+
 /* ---------------- drawing (Builder "Baldai" look) ---------------- */
 const EDGE='#1d2320';
 let K=1; // mm per css px in the drawing
@@ -576,7 +685,7 @@ function defsSVG(){
   `<linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3f46"/><stop offset=".38" stop-color="#16191c"/><stop offset=".40" stop-color="#2b3036"/><stop offset=".55" stop-color="#121417"/><stop offset="1" stop-color="#0b0c0e"/></linearGradient>`+
   `<linearGradient id="gUnder" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`+
   `<radialGradient id="gFloor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>`+
-  `<pattern id="hatch" patternUnits="userSpaceOnUse" width="${PX(9)}" height="${PX(9)}" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="${PX(9)}" class="hatchln" stroke-width="${PX(1.2)}"/></pattern>`+
+  lookDefs()+`<pattern id="hatch" patternUnits="userSpaceOnUse" width="${PX(9)}" height="${PX(9)}" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="${PX(9)}" class="hatchln" stroke-width="${PX(1.2)}"/></pattern>`+
   `</defs>`;
 }
 function metalH(cx,cy,L){return `<rect x="${r1(cx-L/2)}" y="${r1(cy-6)}" width="${r1(L)}" height="12" rx="6" fill="url(#gMetal)" stroke="#4b5056" stroke-width="${PX(.6)}"/>`;}
@@ -584,7 +693,7 @@ function metalV(cx,cy,L){return `<rect x="${r1(cx-6)}" y="${r1(cy-L/2)}" width="
 function knob(cx,cy){return `<circle cx="${r1(cx)}" cy="${r1(cy)}" r="15" fill="url(#gMetal)" stroke="#4b5056" stroke-width="${PX(.6)}"/>`;}
 function segSVG(sg,x,y,w,h,cf,fin){
   const top=cf<1300, sw=PX(1);
-  const panel=(px,pw,fill)=>`<rect x="${r1(px)}" y="${r1(y)}" width="${r1(pw)}" height="${r1(h)}" fill="${fill||fin.c}" stroke="${EDGE}" stroke-width="${sw}"/><rect x="${r1(px)}" y="${r1(y)}" width="${r1(pw)}" height="${r1(h)}" fill="url(#gGloss)"/>`;
+  const panel=(px,pw,fill)=>(fill?`<rect x="${r1(px)}" y="${r1(y)}" width="${r1(pw)}" height="${r1(h)}" fill="${fill}"/>`:lookPaint('front',px,y,pw,h))+`<rect x="${r1(px)}" y="${r1(y)}" width="${r1(pw)}" height="${r1(h)}" fill="none" stroke="${EDGE}" stroke-width="${sw}"/><rect x="${r1(px)}" y="${r1(y)}" width="${r1(pw)}" height="${r1(h)}" fill="url(#gGloss)"/>`;
   const sign=d=>`<path class="rm-open" d="${d}" stroke-width="${PX(.9)}" stroke-dasharray="${PX(4)} ${PX(3)}"/>`;
   const P=(a,b)=>r1(a)+' '+r1(b);
   const vH=hx=>{ if(S.handle==='gola')return ''; const L=Math.min(160,h*0.38);
@@ -602,8 +711,8 @@ function segSVG(sg,x,y,w,h,cf,fin){
     }
     case 'lift': return panel(x,w)+sign(`M${P(x,y)} L${P(x+w/2,y+h)} L${P(x+w,y)}`)+hH(x+w/2,y+h-40);
     case 'open':{
-      let s=`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="${CARC}" stroke="${EDGE}" stroke-width="${sw}"/><rect x="${r1(x+18)}" y="${r1(y+18)}" width="${r1(w-36)}" height="${r1(h-36)}" fill="#cfcbc2" opacity=".75"/><rect x="${r1(x+18)}" y="${r1(y+18)}" width="${r1(w-36)}" height="${r1(Math.min(80,h*0.2))}" fill="url(#gUnder)"/>`;
-      const k=h>520?3:2; for(let i=1;i<k;i++){const yy=y+h*i/k; s+=`<rect x="${r1(x+18)}" y="${r1(yy-9)}" width="${r1(w-36)}" height="18" fill="${CARC}" stroke="${EDGE}" stroke-width="${PX(.6)}"/><rect x="${r1(x+18)}" y="${r1(yy+9)}" width="${r1(w-36)}" height="40" fill="url(#gUnder)"/>`;}
+      let s=lookPaint('carc',x,y,w,h)+`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="none" stroke="${EDGE}" stroke-width="${sw}"/><rect x="${r1(x+18)}" y="${r1(y+18)}" width="${r1(w-36)}" height="${r1(h-36)}" fill="#cfcbc2" opacity=".75"/><rect x="${r1(x+18)}" y="${r1(y+18)}" width="${r1(w-36)}" height="${r1(Math.min(80,h*0.2))}" fill="url(#gUnder)"/>`;
+      const k=h>520?3:2; for(let i=1;i<k;i++){const yy=y+h*i/k; s+=`<rect x="${r1(x+18)}" y="${r1(yy-9)}" width="${r1(w-36)}" height="18" fill="${lookColor('carc')}" stroke="${EDGE}" stroke-width="${PX(.6)}"/><rect x="${r1(x+18)}" y="${r1(yy+9)}" width="${r1(w-36)}" height="40" fill="url(#gUnder)"/>`;}
       return s;}
     case 'oven':
       return `<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(h)}" fill="#26282a" stroke="${EDGE}" stroke-width="${sw}"/>`+
@@ -621,7 +730,7 @@ function segSVG(sg,x,y,w,h,cf,fin){
 }
 function itemSVG(it,X,Y,W,H,floorTop){
   const fin=FINISH[S.finish], sw=PX(1);
-  if(it.layer==='top'){const tp=TOPS[S.worktop]; return `<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="${tp.c}" stroke="${shade(tp.c,0.55)}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(Y+H)}" width="${r1(W)}" height="26" fill="url(#gUnder)"/>`;}
+  if(it.layer==='top'){const tc=lookColor('top'); return lookPaint('top',X,Y,W,H)+`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="none" stroke="${shade(tc,0.55)}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(Y+H)}" width="${r1(W)}" height="26" fill="url(#gUnder)"/>`;}
   if(it.layer==='window'){
     let s=`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" class="r-frame" stroke-width="${PX(1.2)}"/>`;
     const gx=X+50, gy=Y+50, gw=Math.max(10,W-100), gh=Math.max(10,H-100);
@@ -640,7 +749,7 @@ function itemSVG(it,X,Y,W,H,floorTop){
     s+=metalH(L?b-80:a+80,Y+H-1000,120);
     return s;
   }
-  let s=`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="${CARC}" stroke="${EDGE}" stroke-width="${sw}"/>`;
+  let s=lookPaint('carc',X,Y,W,H)+`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="none" stroke="${EDGE}" stroke-width="${sw}"/>`;
   const segs=it.segs||[], n=segs.length, R=segs.reduce((a,b)=>a+b.r,0)||1, avail=H-4-4*Math.max(0,n-1);
   let y=Y+2;
   for(const sg of segs){const h=avail*sg.r/R; s+=segSVG(sg,X+2,y,W-4,h,floorTop-(y-Y)-h/2,fin); y+=h+4;}
@@ -659,7 +768,7 @@ function topExtras(it,X,wt){
 function legsSVG(it,X,W,yFloor){
   const d=S.dims, fin=FINISH[S.finish];
   let s=`<ellipse cx="${r1(X+W/2)}" cy="${r1(yFloor)}" rx="${r1(W*0.56)}" ry="${PX(5)}" fill="url(#gFloor)"/>`;
-  if(it.t==='base_dw') return s+`<rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="${fin.c}" stroke="${EDGE}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="#000" opacity=".12"/>`;
+  if(it.t==='base_dw') return s+`<rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="${lookColor('front')}" stroke="${EDGE}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="#000" opacity=".12"/>`;
   for(const lx of [55,W-55]) s+=`<rect x="${r1(X+lx-20)}" y="${r1(yFloor-d.plinth)}" width="40" height="${d.plinth}" fill="#2d3034"/><rect x="${r1(X+lx-20)}" y="${r1(yFloor-d.plinth)}" width="14" height="${d.plinth}" fill="#fff" opacity=".08"/><rect x="${r1(X+lx-28)}" y="${r1(yFloor-10)}" width="56" height="10" rx="3" fill="#1f2124"/>`;
   return s;
 }
@@ -881,7 +990,7 @@ function renderPlan(){
     } else if(it.layer==='tall'){
       s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,600)}" fill="${bad?'#fde6e3':'#c9cfc8'}" stroke="${stroke}" stroke-width="${sw}"/>`+front(w,u0,u1,600,'',3);
     } else if(it.layer==='top'){
-      s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,620)}" fill="${tp.c}" fill-opacity=".72" stroke="${bad?'#b4291f':shade(tp.c,0.5)}" stroke-width="${sw}"/>`;
+      s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,620)}" fill="${lookColor('top')}" fill-opacity=".72" stroke="${bad?'#b4291f':shade(lookColor('top'),0.5)}" stroke-width="${sw}"/>`;
     } else if(it.layer==='wall'){
       up+=`<polygon class="plan-up pf" data-id="${it.id}" points="${poly(w,u0,u1,0,350)}" stroke-width="${sw}"${bad?' style="stroke:#b4291f"':''}/>`+front(w,u0,u1,350,`stroke-dasharray="${r1(5*k)} ${r1(3*k)}"`,1.5);
     } else if(it.layer==='window'){
@@ -1019,8 +1128,9 @@ function roomHTML(){
   h+=`<div class="row"><div class="fld"><label for="in-roomH">${esc(t('roomH'))}</label>${numBox('roomH',S.roomH,'mm',50,'min="2200" max="3600"')}</div></div>`;
   h+=`<div class="fld"><label for="in-upAt">${esc(t('upAt'))}</label>${numBox('upAt',S.dims.wallBottom,'mm',10,'min="1200" max="1900"')}</div>`;
   h+='<hr class="sep">';
-  h+=`<div class="fld"><span class="lbl">${esc(t('frontColor'))}</span><div class="sw">${Object.entries(FINISH).map(([k,f])=>`<button type="button" class="swatch" data-act="fin" data-v="${k}" aria-pressed="${S.finish===k}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
-  h+=`<div class="fld"><span class="lbl">${esc(t('worktop'))}</span><div class="sw">${Object.entries(TOPS).map(([k,f])=>`<button type="button" class="swatch" data-act="top" data-v="${k}" aria-pressed="${S.worktop===k}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('lookT'))}</span><p class="note">${esc(t('lookL'))}</p>${lookBlock()}</div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('quick'))} · ${esc(t('frontColor'))}</span><div class="sw">${Object.entries(FINISH).map(([k,f])=>`<button type="button" class="swatch" data-act="fin" data-v="${k}" aria-pressed="${S.finish===k&&!lk('front')}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('quick'))} · ${esc(t('worktop'))}</span><div class="sw">${Object.entries(TOPS).map(([k,f])=>`<button type="button" class="swatch" data-act="top" data-v="${k}" aria-pressed="${S.worktop===k&&!lk('top')}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
   h+=`<div class="fld"><span class="lbl">${esc(t('handles'))}</span><div class="seg">${['bar','knob','gola'].map(v=>`<button type="button" data-act="hdl" data-v="${v}" aria-pressed="${S.handle===v}">${esc(t('h_'+v))}</button>`).join('')}</div></div>`;
   h+=`<hr class="sep"><div class="row"><button type="button" class="btn" data-act="example">${esc(t('resetEx'))}</button><button type="button" class="btn danger" data-act="clear" id="clearBtn">${esc(t('clear'))}</button></div>`;
   return h;
@@ -1050,7 +1160,8 @@ function reqText(){
   if(c.name)lines.push(`${t('name')}: ${c.name}`); if(c.phone)lines.push(`${t('phone')}: ${c.phone}`); if(c.email)lines.push(`${t('email')}: ${c.email}`);
   if(c.name||c.phone||c.email)lines.push('');
   lines.push(`${t('shape')}: ${L[S.layout]} · `+activeWalls().map(w=>`${w} ${S.walls[w]} mm`).join(', ')+` · ${t('roomH')} ${S.roomH} mm`);
-  lines.push(`${t('frontColor')}: ${nm(FINISH[S.finish])} · ${t('worktop')}: ${nm(TOPS[S.worktop])} · ${t('handles')}: ${t('h_'+S.handle)}`);
+  const lkTxt=m=>{const l=lk(m); return l?(l.tex?t('lookTex')+' ('+lookColor(m)+')':l.color):m==='front'?nm(FINISH[S.finish]):m==='top'?nm(TOPS[S.worktop]):'';};
+  lines.push(`${t('lk_front')}: ${lkTxt('front')} · ${t('lk_carc')}: ${lkTxt('carc')||lookColor('carc')} · ${t('lk_top')}: ${lkTxt('top')} · ${t('handles')}: ${t('h_'+S.handle)}`);
   lines.push('');
   for(const it of out) lines.push(`${tg[it.id].padEnd(4)} ${nm(CAT[it.t])} · ${it.w}×${Math.round(hOf(it))} mm · ${fdesc(it)}${isBad(it)?' · '+t('noFit').toUpperCase():''}`);
   const rooms=S.items.filter(i=>activeWalls().includes(i.wall)&&!i.segs);
@@ -1060,7 +1171,7 @@ function reqText(){
 }
 function projJSON(){
   const {out,tg}=listed();
-  return JSON.stringify({app:'db-kitchen-sketch',v:1,layout:S.layout,walls:Object.fromEntries(activeWalls().map(w=>[w,S.walls[w]])),roomH:S.roomH,dims:S.dims,finish:S.finish,worktop:S.worktop,handle:S.handle,contact:S.contact,
+  return JSON.stringify({app:'db-kitchen-sketch',v:1,layout:S.layout,walls:Object.fromEntries(activeWalls().map(w=>[w,S.walls[w]])),roomH:S.roomH,dims:S.dims,finish:S.finish,worktop:S.worktop,handle:S.handle,look:Object.fromEntries(LOOKS.map(m=>[m,{color:lookColor(m),texture:!!(lk(m)&&lk(m).tex)}])),contact:S.contact,
     items:S.items.filter(i=>activeWalls().includes(i.wall)).map(i=>({tag:tg[i.id]||null,wall:i.wall,type:i.t,layer:i.layer,x:Math.round(i.x),w:i.w,h:Math.round(hOf(i)),y0:i.layer==='window'?i.y0:undefined,fronts:i.segs?i.segs.map((s,k)=>({kind:s.k,leaves:s.k==='door'?(s.n||1):undefined,hinge:s.k==='door'&&s.n!==2?(s.hg||'L'):undefined,h:Math.round(segMM(i)[k])})):undefined}))},null,1);
 }
 function listHTML(){
@@ -1213,8 +1324,12 @@ insp.addEventListener('click',e=>{
     case 'del': if(it)mut(()=>{S.items=S.items.filter(o=>o.id!==it.id); U.sel=null;}); break;
     case 'move': if(it&&v!==it.wall){const sp=findSpot(it,appendX(it,v),v); if(sp==null){toast(t('noSpace'));break;} mut(()=>{it.wall=v; it.x=sp; U.wall=v;});} break;
     case 'layout': if(v!==S.layout)mut(()=>{S.layout=v; if(!activeWalls().includes(U.wall))U.wall='A';}); break;
-    case 'fin': mut(()=>{S.finish=v;}); break;
-    case 'top': mut(()=>{S.worktop=v;}); break;
+    case 'fin': mut(()=>{S.finish=v; if(S.look)delete S.look.front;}); if(G3)G3.texCache={}; break;
+    case 'top': mut(()=>{S.worktop=v; if(S.look)delete S.look.top;}); if(G3)G3.texCache={}; break;
+    case 'lookpaste': lookPaste(v); break;
+    case 'lookfit': lookSet(v,l=>{l.fit=l.fit===false;}); break;
+    case 'lookrot': lookSet(v,l=>{l.rot=!l.rot;}); break;
+    case 'lookrm': lookSet(v,l=>{delete l.tex; l.color=''; delete l.avg;}); break;
     case 'hdl': mut(()=>{S.handle=v;}); break;
     case 'example': snapshot(); S=defaultState(); S.contact=JSON.parse(U.undo[U.undo.length-1]).contact||S.contact; U.sel=null; U.wall='A'; render(); break;
     case 'clear':
@@ -1226,7 +1341,10 @@ insp.addEventListener('click',e=>{
   }
 });
 insp.addEventListener('change',e=>{
-  const el=e.target; const act=el.dataset.act; if(!act)return; const it=U.sel&&byId(U.sel), v=+el.value, i=+el.dataset.i;
+  const el=e.target; const act=el.dataset.act||''; if(!act&&!el.dataset.lookfile&&!el.dataset.lookcol&&!el.dataset.lookmm)return; const it=U.sel&&byId(U.sel), v=+el.value, i=+el.dataset.i;
+  if(el.dataset.lookfile){const f=el.files&&el.files[0]; if(f)lookTexture(el.dataset.lookfile,f); el.value=''; return;}
+  if(el.dataset.lookcol){const m=el.dataset.lookcol; lookSet(m,l=>{l.color=el.value; delete l.tex; delete l.avg;}); return;}
+  if(el.dataset.lookmm){const m=el.dataset.lookmm, v2=parseFloat(String(el.value).replace(',','.')); if(v2>0)lookSet(m,l=>{l.mm=Math.round(v2);}); return;}
   if(act==='w'&&it){setW(it,v); return;}
   if(act==='ih'&&it){setH(it,v); return;}
   if(act==='tlev'&&it){mut(()=>{it.y0=Math.max(300,Math.min(1400,Math.round(v)));}); return;}
@@ -1428,6 +1546,25 @@ function init3D(){
 }
 function mat(c,o){const k=c+JSON.stringify(o||{}); if(!G3.mats[k]) G3.mats[k]=new THREE.MeshStandardMaterial(Object.assign({color:new THREE.Color(c).convertSRGBToLinear(),roughness:0.72,metalness:0},o||{})); return G3.mats[k];}
 function sched3D(){cancelAnimationFrame(b3); b3=requestAnimationFrame(()=>{build3D(); draw3D();});}
+/* a board's material with the photo: laid once over the board (cover, cropped) or tiled at real size; cached per size */
+function lookMat(m,w,h){
+  const l=lk(m); if(!l||!l.tex||!window.THREE)return null; const u=texURL(l.tex); if(!u)return null;
+  G3.texCache=G3.texCache||{}; G3.texSrc=G3.texSrc||{};
+  let src=G3.texSrc[l.tex]; if(!src){src=G3.texSrc[l.tex]=new THREE.TextureLoader().load(u,()=>{G3.texCache={}; sched3D();}); src.encoding=THREE.sRGBEncoding;}
+  const fit=l.fit!==false, rw=Math.round(w/10), rh=Math.round(h/10), key=[m,l.tex,fit,l.mm,l.rot,fit?rw:0,fit?rh:0].join('|');
+  if(G3.texCache[key])return G3.texCache[key];
+  if(!src.image)return null;
+  const tx=src.clone(); tx.needsUpdate=true; tx.encoding=THREE.sRGBEncoding; tx.wrapS=tx.wrapT=THREE.RepeatWrapping; tx.center.set(.5,.5);
+  if(l.rot)tx.rotation=Math.PI/2;
+  const ar=l.ar||1;
+  if(fit){ // cover: crop the photo to the board's proportions
+    const bw=l.rot?h:w, bh=l.rot?w:h, boardAR=bh/Math.max(1,bw);
+    if(boardAR>ar){tx.repeat.set(ar/boardAR,1);} else {tx.repeat.set(1,boardAR/ar);}
+    tx.wrapS=tx.wrapT=THREE.ClampToEdgeWrapping;
+  } else {const pw=Math.max(50,+l.mm||1000); tx.repeat.set(w/pw,h/(pw*ar));}
+  const mt=new THREE.MeshStandardMaterial({map:tx,color:0xffffff,roughness:m==='top'?.45:.7,metalness:0});
+  return G3.texCache[key]=mt;
+}
 function build3D(){
   if(!G3||U.view!=='3d')return;
   const {scene}=G3;
@@ -1435,7 +1572,9 @@ function build3D(){
   const root=new THREE.Group(); root.scale.setScalar(0.001); G3.root=root; scene.add(root);
   scene.background=new THREE.Color(cssv('--paper')||'#FAFBF8').convertSRGBToLinear();
   const ws=activeWalls(), A=S.walls.A, B=S.walls.B, C=S.walls.C, d=S.dims, fin=FINISH[S.finish], tp=TOPS[S.worktop];
-  const fm=mat(fin.c), plm=mat(shade(fin.c,0.72)), dark=mat(shade(fin.c,0.45)), hm=mat(fin.h,{roughness:.35,metalness:.55}), topm=mat(tp.c,{roughness:.45});
+  const fc=lookColor('front'), cc=lookColor('carc');
+  const fm=mat(fc), cm=mat(cc), plm=mat(shade(fc,0.72)), dark=mat(shade(cc,0.45)), hm=mat(lookHandle(),{roughness:.35,metalness:.55}), topm=mat(lookColor('top'),{roughness:.45});
+  const LM=(m,w,h,dflt)=>lookMat(m,w,h)||dflt;
   const steel=mat('#B9BEC0',{roughness:.3,metalness:.75}), blk=mat('#1C1D1E',{roughness:.3,metalness:.2}), gblk=mat('#0A0B0C',{roughness:.08,metalness:.4});
   const wallM=mat('#ECEAE5',{roughness:.95}), floorM=mat('#D3CABC',{roughness:.85});
   const box=(g,w,h,dp,x,y,z,m,cs=true)=>{if(w<=0||h<=0||dp<=0)return null; const me=new THREE.Mesh(new THREE.BoxGeometry(w,h,dp),m); me.position.set(x,y,z); me.castShadow=cs; me.receiveShadow=true; g.add(me); return me;};
@@ -1457,7 +1596,7 @@ function build3D(){
     const g=new THREE.Group(); g.userData.id=it.id; wg[it.wall].add(g);
     const [y0,y1]=vert(it), X=it.x, W=it.w, Hh=y1-y0, D=DEPTH[it.layer], c=CAT[it.t]||{};
     if(it.layer==='top'){
-      box(g,W,Hh,620,X+W/2,y0+Hh/2,310,topm);
+      box(g,W,Hh,620,X+W/2,y0+Hh/2,310,LM('top',W,620,topm));
     } else if(it.layer==='window'){
       const fr=mat('#F4F3EF',{roughness:.6}), gl=mat('#9EC3D2',{roughness:.05,metalness:.1,transparent:true,opacity:.45});
       box(g,W-80,Hh-80,6,X+W/2,y0+Hh/2,4,gl,false);
@@ -1469,13 +1608,13 @@ function build3D(){
       box(g,W,50,60,X+W/2,Hh-25,30,fr); box(g,50,Hh,60,X+25,Hh/2,30,fr); box(g,50,Hh,60,X+W-25,Hh/2,30,fr);
       box(g,W-100,Hh-50,40,X+W/2,(Hh-50)/2,20,lf); box(g,120,16,30,L?X+W-130:X+130,1000,55,steel);
     } else {
-      box(g,W-2,Hh,D-19,X+W/2,y0+Hh/2,(D-19)/2,fm);
+      box(g,W-2,Hh,D-19,X+W/2,y0+Hh/2,(D-19)/2,LM('carc',D-19,Hh,cm));
       if(it.layer==='base'||it.layer==='tall') box(g,W-2,d.plinth,D-80,X+W/2,d.plinth/2,(D-80)/2,plm);
       const segs=it.segs||[], n=segs.length, Rr=segs.reduce((a,q)=>a+q.r,0)||1, av=Hh-4-4*Math.max(0,n-1), zF=D-9;
       let yt=y1-2;
       for(const sg of segs){
         const h=av*sg.r/Rr, yb=yt-h, yc=yb+h/2, low=yc<1300, xa=X+2, wa=W-4;
-        const panel=(px,pw,m)=>box(g,pw,h,18,px+pw/2,yc,zF,m||fm);
+        const panel=(px,pw,m)=>box(g,pw,h,18,px+pw/2,yc,zF,m||LM('front',pw,h,fm));
         const knob=(x,y)=>{const me=new THREE.Mesh(new THREE.CylinderGeometry(15,15,24,18),hm); me.rotation.x=Math.PI/2; me.position.set(x,y,D+12); me.castShadow=true; g.add(me);};
         const vbar=hx=>{if(S.handle==='gola')return; if(S.handle==='knob'){knob(hx,low?yt-60:yb+60); return;} const L=Math.min(150,h*0.35); box(g,12,L,22,hx,low?yt-45-L/2:yb+45+L/2,D+11,hm);};
         const hbar=(cx,hy)=>{if(S.handle==='gola')return; if(S.handle==='knob'){knob(cx,hy); return;} box(g,Math.min(220,wa*0.45),12,22,cx,hy,D+11,hm);};
@@ -1488,8 +1627,8 @@ function build3D(){
           case 'lift': panel(xa,wa); hbar(xa+wa/2,yb+40); break;
           case 'open':{
             box(g,wa-36,h-36,4,xa+wa/2,yc,D-17,dark,false);
-            box(g,18,h,18,xa+9,yc,zF,fm); box(g,18,h,18,xa+wa-9,yc,zF,fm); box(g,wa,18,18,xa+wa/2,yt-9,zF,fm); box(g,wa,18,18,xa+wa/2,yb+9,zF,fm);
-            const k=h>520?3:2; for(let q=1;q<k;q++) box(g,wa-36,18,18,xa+wa/2,yb+h*q/k,zF,fm);
+            box(g,18,h,18,xa+9,yc,zF,cm); box(g,18,h,18,xa+wa-9,yc,zF,cm); box(g,wa,18,18,xa+wa/2,yt-9,zF,cm); box(g,wa,18,18,xa+wa/2,yb+9,zF,cm);
+            const k=h>520?3:2; for(let q=1;q<k;q++) box(g,wa-36,18,18,xa+wa/2,yb+h*q/k,zF,cm);
             break;}
           case 'oven': box(g,wa,h,18,xa+wa/2,yc,zF,blk); box(g,wa*0.76,h*0.56,4,xa+wa/2,yt-h*0.6,D+1,gblk,false); box(g,wa*0.76,14,26,xa+wa/2,yt-h*0.235,D+13,steel); break;
           case 'mw': box(g,wa,h,18,xa+wa/2,yc,zF,blk); box(g,wa*0.62,h*0.7,4,xa+wa*0.38,yc,D+1,gblk,false); break;
