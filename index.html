@@ -192,10 +192,10 @@ button{cursor:pointer}
 .segrow{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;padding:7px;border:1px solid var(--line);border-radius:8px;background:var(--sunk)}
 .segrow .top{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .segrow .top.hd{flex-wrap:nowrap}
-.segrow .top.hd select{flex:1}
+.segrow .top.hd select{flex:1;min-width:92px;font-size:12.5px}
 .segrow select{border:1px solid var(--line2);border-radius:6px;background:var(--panel);padding:5px 6px;font-size:13px;min-width:0}
 .segrow .mm{display:flex;align-items:center;border:1px solid var(--line2);border-radius:6px;background:var(--panel)}
-.segrow .mm input{width:56px;border:0;background:transparent;padding:5px 4px 5px 6px;font:600 13px var(--f-mono);text-align:right}
+.segrow .mm input{width:48px;border:0;background:transparent;padding:5px 4px 5px 6px;font:600 13px var(--f-mono);text-align:right}
 .segrow .mm span{font:11px var(--f-mono);color:var(--muted);padding-right:6px}
 .mini{border:1px solid var(--line2);background:var(--panel);border-radius:6px;padding:4px 7px;font-size:12px;font-weight:600;line-height:1.2}
 .mini:hover{border-color:var(--ink)}
@@ -286,6 +286,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 
 <div class="wrap room">
   <div class="bar">
+    <div class="seg" id="kindSw" role="group" aria-label="Project"><button type="button" data-kind="kitchen" data-tx="modeK"></button><button type="button" data-kind="robe" data-tx="modeR"></button></div>
     <div class="seg" id="viewSw" role="group" aria-label="View"><button type="button" data-view="wall" data-tx="vFront"></button><button type="button" data-view="plan" data-tx="vPlan"></button><button type="button" data-view="3d">3D</button></div>
     <div class="seg wtabs" id="wtabs" role="group"></div>
     <div class="grow"></div>
@@ -323,7 +324,7 @@ hr.sep{border:0;border-top:1px solid var(--line);margin:0}
 'use strict';
 /* ---------------- text ---------------- */
 const T={
-lt:{lookT:'Išvaizda 3D vaizde',lookL:'Įkelkite plokštės dekoro nuotrauką (tekstūrą), įklijuokite ją iš iškarpinės (Įklijuoti arba Ctrl+V), nutempkite ant medžiagos arba pasirinkite spalvą: tokie bus priekio, plano ir 3D vaizdai. Nuotrauka dedama per visą kiekvieną detalę; išjungus „Per visą detalę“ ji kartojama tikru dydžiu („Raštas“: kiek mm plokštės apima nuotraukos plotis). ↻ – kai nuotraukoje rievės eina skersai.',lookUp:'Įkelti tekstūrą',lookChange:'Keisti',lookPaste:'Įklijuoti',lookPasteT:'Įklijuoti paveikslėlį iš iškarpinės (nukopijuotą nuotrauką arba ekrano iškarpą)',lookCol:'Spalva',lookFit:'Per visą detalę',lookFitT:'Nuotrauka dedama per visą kiekvieną detalę (be kartojimo, kraštai apkerpami). Išjungus – kartojama tikru dydžiu: nurodykite, kiek mm plokštės apima nuotraukos plotis.',lookMm:'Raštas',lookRot:'Pasukti raštą 90°',lookRm:'Pašalinti išvaizdą',lookBad:'Nepavyko perskaityti paveikslėlio',lookFull:'Nepavyko išsaugoti: naršyklės atmintis pilna. Įkelkite mažesnę nuotrauką.',lookCtrlV:'Paspauskite Ctrl+V: paveikslėlis bus įklijuotas į „{n}“',lookNoImg:'Iškarpinėje nėra paveikslėlio. Nukopijuokite nuotrauką (dešinys pelės mygtukas → Kopijuoti paveikslėlį) arba padarykite ekrano iškarpą.',lookPick:'Kuriai medžiagai? Spauskite „Įklijuoti“ prie medžiagos, tada Ctrl+V.',lookTex:'tekstūra',lk_front:'Fasadai',lk_carc:'Korpusas',lk_top:'Stalviršis',quick:'Greitas pasirinkimas',thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:'Uždengs spinteles: {w} mm',bodyH:'Korpuso aukštis',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
+lt:{titleRobe:'Spintos eskizas',subRobe:'Dėdės Baldai · nusibraižykite savo spintą',modeK:'Virtuvė',modeR:'Spinta',catRobe:'Spintos',doorsL:'Durys',d_none:'Be durų',d_hinged:'Varstomos',d_sliding:'Stumdomos',panelsL:'Varčių skaičius',depth:'Gylis',sections:'Sekcijos',sectionsS:'sekc.',section:'Sekcija',inside:'Vidus, iš viršaus į apačią',rk_shelf:'Lentyna',rk_rail:'Pakaba',rk_drawers:'Stalčiai',rk_shoes:'Batams',addShelf:'+ Lentyna',addRail:'+ Pakaba',addDrw:'+ Stalčiai',ledAll:'LED visur',led:'LED',drwN:'Stalčių:',robeHint:'Pasirinkta spinta rodoma atidaryta: matote ir keičiate vidų. Spustelėkite sekciją brėžinyje, tempkite lentynas ir sekcijų ribas arba spustelėkite skaičių. Kad pamatytumėte duris, spustelėkite tuščią vietą.',lookT:'Išvaizda 3D vaizde',lookL:'Įkelkite plokštės dekoro nuotrauką (tekstūrą), įklijuokite ją iš iškarpinės (Įklijuoti arba Ctrl+V), nutempkite ant medžiagos arba pasirinkite spalvą: tokie bus priekio, plano ir 3D vaizdai. Nuotrauka dedama per visą kiekvieną detalę; išjungus „Per visą detalę“ ji kartojama tikru dydžiu („Raštas“: kiek mm plokštės apima nuotraukos plotis). ↻ – kai nuotraukoje rievės eina skersai.',lookUp:'Įkelti tekstūrą',lookChange:'Keisti',lookPaste:'Įklijuoti',lookPasteT:'Įklijuoti paveikslėlį iš iškarpinės (nukopijuotą nuotrauką arba ekrano iškarpą)',lookCol:'Spalva',lookFit:'Per visą detalę',lookFitT:'Nuotrauka dedama per visą kiekvieną detalę (be kartojimo, kraštai apkerpami). Išjungus – kartojama tikru dydžiu: nurodykite, kiek mm plokštės apima nuotraukos plotis.',lookMm:'Raštas',lookRot:'Pasukti raštą 90°',lookRm:'Pašalinti išvaizdą',lookBad:'Nepavyko perskaityti paveikslėlio',lookFull:'Nepavyko išsaugoti: naršyklės atmintis pilna. Įkelkite mažesnę nuotrauką.',lookCtrlV:'Paspauskite Ctrl+V: paveikslėlis bus įklijuotas į „{n}“',lookNoImg:'Iškarpinėje nėra paveikslėlio. Nukopijuokite nuotrauką (dešinys pelės mygtukas → Kopijuoti paveikslėlį) arba padarykite ekrano iškarpą.',lookPick:'Kuriai medžiagai? Spauskite „Įklijuoti“ prie medžiagos, tada Ctrl+V.',lookTex:'tekstūra',lk_front:'Fasadai',lk_carc:'Korpusas',lk_top:'Stalviršis',quick:'Greitas pasirinkimas',thick:'Storis',level:'Aukštis nuo grindų',autoLvl:'Pagal spinteles',wtRun:'Uždengs spinteles: {w} mm',bodyH:'Korpuso aukštis',title:'Virtuvės eskizas',sub:'Dėdės Baldai · nusibraižykite savo virtuvę',vFront:'Iš priekio',vPlan:'Planas',rmAdd:'Pridėti spintelę',planLeg:'Stora linija: spintelės priekis · punktyras: pakabinamos',planHint:'Tempkite spintelę išilgai sienos arba ant kitos sienos. Spustelėkite sieną, kad ją pasirinktumėte.',undo:'Atšaukti',redo:'Grąžinti',
  catBase:'Apatinės spintelės',catWall:'Pakabinamos',catTall:'Aukštos spintos',catRoom:'Patalpa',
  dragHint:'Nutempkite ant sienos arba spustelėkite: atsiras po paskutine.',
  elev:'Sienos vaizdas',plan:'Planas iš viršaus',wall:'Siena',
@@ -355,10 +356,10 @@ lt:{lookT:'Išvaizda 3D vaizde',lookL:'Įkelkite plokštės dekoro nuotrauką (t
  vWall:'Brėžinys',v3reset:'Atstatyti vaizdą',v3load:'Kraunamas 3D vaizdas…',v3fail:'3D vaizdo nepavyko įkelti. Patikrinkite interneto ryšį ir bandykite dar kartą.',
  v3hint:'Sukite tempdami, artinkite ratuku arba dviem pirštais, stumkite su Shift arba dešiniu pelės mygtuku. Bakstelėkite spintelę, kad ją redaguotumėte.',
  v3nogl:'Ši naršyklė nepalaiko 3D vaizdo.',
- emptyList:'Kol kas nėra spintelių.',reqTitle:'Virtuvės eskizo užklausa',shape:'Forma',
+ emptyList:'Kol kas nėra spintelių.',reqTitle:'Virtuvės eskizo užklausa',reqTitleR:'Spintos eskizo užklausa',carcDef:'balta',shape:'Forma',
  tagWall:'Siena',hood:'gartraukis',sink:'kriauklė',hob:'kaitlentė',fridge:'šaldytuvas',
  removed:'Ištrinta',added:'Pridėta'},
-en:{lookT:'Look in the 3D views',lookL:'Upload a photo of the board decor (texture), paste it from the clipboard (Paste or Ctrl+V), drop it on a material, or pick a colour: the front, plan and 3D views follow it. The photo is laid once over each board; with “Over the whole board” off it repeats at its real size (“Pattern”: how many mm of board the photo’s width covers). ↻ for a photo whose grain runs across.',lookUp:'Upload texture',lookChange:'Change',lookPaste:'Paste',lookPasteT:'Paste an image from the clipboard (a copied photo or a screenshot)',lookCol:'Colour',lookFit:'Over the whole board',lookFitT:'The photo is laid once over each board (no repeats, the edges cropped). Off: it repeats at its real size: enter how many mm of board the photo’s width covers.',lookMm:'Pattern',lookRot:'Rotate the pattern 90°',lookRm:'Remove the look',lookBad:'Could not read the image',lookFull:'Could not save: the browser storage is full. Upload a smaller photo.',lookCtrlV:'Press Ctrl+V: the image goes to “{n}”',lookNoImg:'There is no image on the clipboard. Copy a photo (right-click → Copy image) or take a screenshot.',lookPick:'Which material? Click “Paste” next to a material, then Ctrl+V.',lookTex:'texture',lk_front:'Fronts',lk_carc:'Carcass',lk_top:'Worktop',quick:'Quick picks',thick:'Thickness',level:'Height from floor',autoLvl:'Follow cabinets',wtRun:'Covers the cabinets: {w} mm',bodyH:'Body height',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
+en:{titleRobe:'Wardrobe sketch',subRobe:'Dėdės Baldai · sketch your wardrobe',modeK:'Kitchen',modeR:'Wardrobe',catRobe:'Wardrobes',doorsL:'Doors',d_none:'No doors',d_hinged:'Hinged',d_sliding:'Sliding',panelsL:'Panels',depth:'Depth',sections:'Sections',sectionsS:'sections',section:'Section',inside:'Inside, top to bottom',rk_shelf:'Shelf',rk_rail:'Hanging rail',rk_drawers:'Drawers',rk_shoes:'Shoes',addShelf:'+ Shelf',addRail:'+ Rail',addDrw:'+ Drawers',ledAll:'LED everywhere',led:'LED',drwN:'Drawers:',robeHint:'A selected wardrobe is shown open so you can see and change the inside. Click a section on the drawing, drag shelves and section borders, or click a number. Click an empty spot to see the doors.',lookT:'Look in the 3D views',lookL:'Upload a photo of the board decor (texture), paste it from the clipboard (Paste or Ctrl+V), drop it on a material, or pick a colour: the front, plan and 3D views follow it. The photo is laid once over each board; with “Over the whole board” off it repeats at its real size (“Pattern”: how many mm of board the photo’s width covers). ↻ for a photo whose grain runs across.',lookUp:'Upload texture',lookChange:'Change',lookPaste:'Paste',lookPasteT:'Paste an image from the clipboard (a copied photo or a screenshot)',lookCol:'Colour',lookFit:'Over the whole board',lookFitT:'The photo is laid once over each board (no repeats, the edges cropped). Off: it repeats at its real size: enter how many mm of board the photo’s width covers.',lookMm:'Pattern',lookRot:'Rotate the pattern 90°',lookRm:'Remove the look',lookBad:'Could not read the image',lookFull:'Could not save: the browser storage is full. Upload a smaller photo.',lookCtrlV:'Press Ctrl+V: the image goes to “{n}”',lookNoImg:'There is no image on the clipboard. Copy a photo (right-click → Copy image) or take a screenshot.',lookPick:'Which material? Click “Paste” next to a material, then Ctrl+V.',lookTex:'texture',lk_front:'Fronts',lk_carc:'Carcass',lk_top:'Worktop',quick:'Quick picks',thick:'Thickness',level:'Height from floor',autoLvl:'Follow cabinets',wtRun:'Covers the cabinets: {w} mm',bodyH:'Body height',title:'Kitchen sketch',sub:'Dėdės Baldai · sketch your kitchen',vFront:'Front',vPlan:'Plan',rmAdd:'Add a cabinet',planLeg:'Thick line: cabinet front · dashed: wall units',planHint:'Drag a cabinet along its wall or onto another wall. Click a wall to select it.',undo:'Undo',redo:'Redo',
  catBase:'Base cabinets',catWall:'Wall cabinets',catTall:'Tall units',catRoom:'Room',
  dragHint:'Drag onto a wall, or click to add it after the last one.',
  elev:'Wall view',plan:'Floor plan',wall:'Wall',
@@ -390,13 +391,26 @@ en:{lookT:'Look in the 3D views',lookL:'Upload a photo of the board decor (textu
  vWall:'Drawing',v3reset:'Reset view',v3load:'Loading 3D view…',v3fail:'The 3D view could not load. Check the internet connection and try again.',
  v3hint:'Drag to orbit, scroll or pinch to zoom, Shift-drag or right-drag to pan. Tap a cabinet to edit it.',
  v3nogl:'This browser does not support the 3D view.',
- emptyList:'No cabinets yet.',reqTitle:'Kitchen sketch request',shape:'Shape',
+ emptyList:'No cabinets yet.',reqTitle:'Kitchen sketch request',reqTitleR:'Wardrobe sketch request',carcDef:'white',shape:'Shape',
  tagWall:'Wall',hood:'hood',sink:'sink',hob:'hob',fridge:'fridge',
  removed:'Deleted',added:'Added'}
 };
 
 /* ---------------- catalogue ---------------- */
+const RPRE={
+ shelves:{lt:'Lentynos',en:'Shelves',s:()=>[1,1,1,1,1,1].map(()=>({k:'shelf',r:1}))},
+ rail:{lt:'Pakaba',en:'Hanging',s:()=>[{k:'shelf',r:350},{k:'rail',r:1850,led:true}]},
+ rail2:{lt:'Dvi pakabos',en:'Two rails',s:()=>[{k:'shelf',r:300},{k:'rail',r:950,led:true},{k:'rail',r:950}]},
+ railDrw:{lt:'Pakaba + stalčiai',en:'Rail + drawers',s:()=>[{k:'shelf',r:350},{k:'rail',r:1150,led:true},{k:'drawers',n:3,r:700}]},
+ shelfDrw:{lt:'Lentynos + stalčiai',en:'Shelves + drawers',s:()=>[{k:'shelf',r:1},{k:'shelf',r:1},{k:'shelf',r:1},{k:'shelf',r:1},{k:'drawers',n:3,r:1.8}]},
+ shoes:{lt:'Batams',en:'Shoes',s:()=>[{k:'shelf',r:1},{k:'shelf',r:1},{k:'shoes',r:1},{k:'shoes',r:1},{k:'shoes',r:1}]}
+};
+const rcol=(p,hg)=>({r:1,hg:hg||'L',segs:RPRE[p].s()});
 const CAT={
+ robe_hinged:{g:'robe',layer:'robe',w:1200,h:2400,d:600,doors:'hinged',lt:'Spinta su varstomomis durimis',en:'Wardrobe, hinged doors',cols:[rcol('rail','L'),rcol('shelfDrw','R')]},
+ robe_sliding:{g:'robe',layer:'robe',w:2400,h:2400,d:650,doors:'sliding',panels:2,lt:'Spinta su stumdomomis durimis',en:'Wardrobe, sliding doors',cols:[rcol('shelfDrw'),rcol('rail2'),rcol('railDrw')]},
+ robe_shelf:{g:'robe',layer:'robe',w:500,h:2400,d:600,doors:'hinged',lt:'Siaura lentynų spinta',en:'Narrow shelf unit',cols:[rcol('shelves')]},
+ robe_open:{g:'robe',layer:'robe',w:900,h:2400,d:400,doors:'none',lt:'Atvira spinta',en:'Open wardrobe',cols:[rcol('shelves')]},
  base_door:{g:'base',layer:'base',w:600,lt:'Spintelė su durelėmis',en:'Door cabinet',segs:[{k:'door',n:1,hg:'L',r:1}]},
  base_drawers:{g:'base',layer:'base',w:600,lt:'Stalčių spintelė',en:'Drawer cabinet',segs:[{k:'drawer',r:1},{k:'drawer',r:1.5},{k:'drawer',r:1.5}]},
  base_sink:{g:'base',layer:'base',w:800,lt:'Kriauklės spintelė',en:'Sink cabinet',sink:1,segs:[{k:'door',n:2,r:1}]},
@@ -428,10 +442,10 @@ const TOPS={
  oak:{lt:'Ąžuolas',en:'Oak',c:'#C29A66'},
  black:{lt:'Juodas akmuo',en:'Black stone',c:'#2A2B2B'}
 };
-const DEPTH={base:600,tall:600,wall:350,window:0,door:0,top:620};
-const OCC={base:['F'],wall:['U'],tall:['F','U'],window:['U'],door:['F','U'],top:['T']};
+const DEPTH={base:600,tall:600,wall:350,window:0,door:0,top:620,robe:600};
+const OCC={base:['F'],wall:['U'],tall:['F','U'],window:['U'],door:['F','U'],top:['T'],robe:['F','U']};
 const WALLS_FOR={I:['A'],L:['A','B'],U:['A','B','C']};
-const LORD={tall:0,base:1,top:1.5,wall:2,door:3,window:4};
+const LORD={robe:0,tall:0,base:1,top:1.5,wall:2,door:3,window:4};
 const SNAP=70;
 
 /* ---------------- state ---------------- */
@@ -441,6 +455,7 @@ const clone=o=>JSON.parse(JSON.stringify(o));
 function mk(t,wall,x,extra){
   const c=CAT[t]; const it={id:uid(),t,layer:c.layer,wall,x,w:c.w};
   if(c.segs) it.segs=clone(c.segs);
+  if(c.cols){it.cols=clone(c.cols); it.doors=c.doors; if(c.panels)it.panels=c.panels; it.d=c.d;}
   if(c.h) it.h=c.h; if(c.y0!=null) it.y0=c.y0; if(c.hg) it.hg=c.hg;
   return Object.assign(it,extra||{});
 }
@@ -457,8 +472,12 @@ function sample(){
     mk('window','B',900), mk('wall_open','B',350,{w:500}), mk('wall_door','B',2100,{w:300,segs:[{k:'door',n:1,hg:'R',r:1}]})
   ];
 }
-function defaultState(){
-  return {v:1,example:true,layout:'L',walls:{A:3600,B:2400,C:3000},roomH:2600,
+function sampleRobe(){return [mk('robe_sliding','A',0), mk('robe_open','A',2400,{w:800})];}
+function defaultState(kind){
+  if(kind==='robe') return {v:1,kind:'robe',example:true,layout:'I',walls:{A:3200,B:2400,C:3000},roomH:2600,
+    dims:{plinth:100,baseH:720,top:38,wallBottom:1420,wallH:720},
+    finish:'white',worktop:'oak',handle:'bar',look:{},contact:{name:'',phone:'',email:'',note:''},items:sampleRobe()};
+  return {v:1,kind:'kitchen',example:true,layout:'L',walls:{A:3600,B:2400,C:3000},roomH:2600,
     dims:{plinth:100,baseH:720,top:38,wallBottom:1420,wallH:720},
     finish:'white',worktop:'oak',handle:'bar',look:{},contact:{name:'',phone:'',email:'',note:''},items:sample()};
 }
@@ -490,6 +509,7 @@ function vert(it){
     case 'wall':{const tp=wallTop(); return [tp-(it.h||d.wallH),tp];}
     case 'tall':return [d.plinth,it.h?d.plinth+it.h:wallTop()];
     case 'top':{const y0=it.y0!=null?it.y0:autoLevel(it); return [y0,y0+(it.th||d.top)];}
+    case 'robe':return [d.plinth,d.plinth+(it.h||2400)];
     case 'window':return [it.y0,it.y0+it.h];
     case 'door':return [0,it.h];
   }
@@ -503,22 +523,24 @@ function baseRunAt(wall,along,exId){
   for(const r of iv){if(m.length&&r[0]<=m[m.length-1][1]+1)m[m.length-1][1]=Math.max(m[m.length-1][1],r[1]); else m.push([r[0],r[1]]);}
   return m.find(([a,b])=>along>=a-1&&along<=b+1)||null;
 }
-function hLimits(it){const d=S.dims; return it.layer==='base'?[300,1000]:it.layer==='tall'?[1000,S.roomH-d.plinth]:it.layer==='wall'?[200,wallTop()-(d.plinth+d.baseH)]:[0,S.roomH];}
+function hLimits(it){const d=S.dims; return it.layer==='robe'?[1000,S.roomH-d.plinth]:it.layer==='base'?[300,1000]:it.layer==='tall'?[1000,S.roomH-d.plinth]:it.layer==='wall'?[200,wallTop()-(d.plinth+d.baseH)]:[0,S.roomH];}
 function hPresets(it){const d=S.dims;
+  if(it.layer==='robe') return [...new Set([2000,2200,2400,S.roomH-d.plinth])].filter(v=>v<=S.roomH-d.plinth).sort((a,b)=>a-b);
   if(it.layer==='base') return [580,720,760,800,860];
   if(it.layer==='tall') return [...new Set([1800,2000,wallTop()-d.plinth,2200,S.roomH-d.plinth])].filter(v=>v<=S.roomH-d.plinth).sort((a,b)=>a-b);
   return [360,580,720,900];}
 function setH(it,v){const [a,b]=hLimits(it); v=Math.max(a,Math.min(b,Math.round(v))); if(v===Math.round(hOf(it)))return; mut(()=>{it.h=v;});}
+function dep_(it){return it.d||DEPTH[it.layer]||0;}
 function corners(wallId){
   const ws=activeWalls(), i=ws.indexOf(wallId), res=[]; if(i<0)return res;
   const L=S.walls[wallId];
   for(const occ of ['F','U']){
     const sq=occ==='F'?600:350;
     if(i>0){const p=ws[i-1],Lp=S.walls[p]; let dep=0;
-      for(const it of S.items) if(it.wall===p&&OCC[it.layer].includes(occ)&&DEPTH[it.layer]>0&&it.x+it.w>Lp-sq+1) dep=Math.max(dep,DEPTH[it.layer]);
+      for(const it of S.items) if(it.wall===p&&OCC[it.layer].includes(occ)&&dep_(it)>0&&it.x+it.w>Lp-sq+1) dep=Math.max(dep,dep_(it));
       if(dep)res.push({occ,a:0,b:dep,tall:S.items.some(it=>it.wall===p&&it.layer==='tall'&&it.x+it.w>Lp-sq+1)});}
     if(i<ws.length-1){const n=ws[i+1]; let dep=0;
-      for(const it of S.items) if(it.wall===n&&OCC[it.layer].includes(occ)&&DEPTH[it.layer]>0&&it.x<sq-1) dep=Math.max(dep,DEPTH[it.layer]);
+      for(const it of S.items) if(it.wall===n&&OCC[it.layer].includes(occ)&&dep_(it)>0&&it.x<sq-1) dep=Math.max(dep,dep_(it));
       if(dep)res.push({occ,a:L-dep,b:L,tall:S.items.some(it=>it.wall===n&&it.layer==='tall'&&it.x<sq-1)});}
   }
   return res;
@@ -569,12 +591,185 @@ function isBad(it){
 }
 function tags(){
   const m={}; let n=0;
-  for(const w of activeWalls()) S.items.filter(i=>i.wall===w&&i.segs).sort((a,b)=>a.x-b.x||LORD[a.layer]-LORD[b.layer]).forEach(it=>m[it.id]=String(++n));
+  for(const w of activeWalls()) S.items.filter(i=>i.wall===w&&isCab(i)).sort((a,b)=>a.x-b.x||LORD[a.layer]-LORD[b.layer]).forEach(it=>m[it.id]=String(++n));
   return m;
 }
 function segAvail(it){const [y0,y1]=vert(it); const n=(it.segs||[]).length; return (y1-y0)-4-4*Math.max(0,n-1);}
 function segMM(it){const A=segAvail(it), R=it.segs.reduce((a,b)=>a+b.r,0)||1; return it.segs.map(s=>A*s.r/R);}
 
+
+/* ---------------- wardrobes ----------------
+   A wardrobe ("robe") is split into sections (cols); each section is a stack of
+   compartments top to bottom: shelf | rail (hanging) | drawers | shoes, each with an
+   optional LED strip under the board above it. A board (18 mm) sits between compartments.
+   Doors: none | hinged (one leaf per section, two when wider than 650) | sliding (2–4 panels). */
+const BD=18;
+function dep(it){return it.d||DEPTH[it.layer]||0;}
+function isCab(it){return !!(it&&(it.segs||it.cols));}
+function colsMM(it){const n=it.cols.length, A=it.w-2*BD-BD*(n-1), R=it.cols.reduce((a,c)=>a+c.r,0)||1; return it.cols.map(c=>A*c.r/R);}
+function colX(it){const ws=colsMM(it); let x=BD; return ws.map(w=>{const a=x; x+=w+BD; return [a,a+w];});}
+function compMM(it,ci){const c=it.cols[ci], n=c.segs.length, [y0,y1]=vert(it), A=(y1-y0)-2*BD-BD*(n-1), R=c.segs.reduce((a,s)=>a+s.r,0)||1; return c.segs.map(s=>A*s.r/R);}
+function colAt(it,x){const xs=colX(it), u=x-it.x; let best=0; xs.forEach(([a],i)=>{if(u>=a-BD)best=i;}); return best;}
+function robeOpen(it){return it.doors==='none'||it.id===U.sel;}
+function leavesOf(it){ // hinged leaves: [x0,x1,hinge] in mm from the wardrobe's left edge
+  const xs=colX(it), out=[], n=xs.length;
+  xs.forEach(([a,b],ci)=>{const l=ci===0?0:a-BD/2, r=ci===n-1?it.w:b+BD/2, w=r-l, hg=it.cols[ci].hg||'L';
+    if(w>650){out.push([l,l+w/2,'L']); out.push([l+w/2,r,'R']);} else out.push([l,r,hg]);});
+  return out;
+}
+function panelsOf(it){const n=Math.max(2,Math.min(4,it.panels||2)), ov=40, pw=(it.w+(n-1)*ov)/n; return Array.from({length:n},(_,i)=>[i*(pw-ov),i*(pw-ov)+pw,i%2]);}
+
+function compSVG(sg,x,y,w,h){
+  let s='';
+  if(sg.k==='rail'){
+    s+=`<rect x="${r1(x+12)}" y="${r1(y+55)}" width="${r1(w-24)}" height="16" rx="8" fill="url(#gMetal)" stroke="#4b5056" stroke-width="${PX(.5)}"/>`;
+    const n=Math.max(1,Math.floor((w-40)/105)), step=(w-40)/n, lens=[0.86,0.62,0.78,0.7,0.9,0.58];
+    for(let i=0;i<n;i++){const cx=x+20+step*(i+0.5), L=Math.max(80,Math.min(h-170,1050)*lens[i%lens.length]);
+      s+=`<path d="M${r1(cx)} ${r1(y+63)} q0 -16 12 -16" fill="none" stroke="#6b7470" stroke-width="${PX(.9)}"/>`+
+        `<path d="M${r1(cx-62)} ${r1(y+128)} L${r1(cx)} ${r1(y+82)} L${r1(cx+62)} ${r1(y+128)}" fill="none" stroke="#6b7470" stroke-width="${PX(.9)}"/>`+
+        `<rect x="${r1(cx-58)}" y="${r1(y+126)}" width="116" height="${r1(L)}" rx="12" fill="#ddd6c9" fill-opacity=".9" stroke="#b9b2a4" stroke-width="${PX(.6)}"/>`;}
+  } else if(sg.k==='drawers'){
+    const n=Math.max(1,sg.n||2), g=6, dh=(h-20-g*(n-1))/n;
+    for(let i=0;i<n;i++){const yy=y+20+i*(dh+g);
+      s+=lookPaint('front',x+6,yy,w-12,dh)+`<rect x="${r1(x+6)}" y="${r1(yy)}" width="${r1(w-12)}" height="${r1(dh)}" fill="url(#gGloss)" stroke="${EDGE}" stroke-width="${PX(.8)}"/>`+
+        `<rect x="${r1(x+w/2-Math.min(80,w*0.18))}" y="${r1(yy+Math.min(30,dh*0.2))}" width="${r1(Math.min(160,w*0.36))}" height="10" rx="5" fill="#2d3034" opacity=".75"/>`;}
+  } else if(sg.k==='shoes'){
+    const n=Math.max(1,Math.floor((w-30)/170)), step=(w-30)/n, base=y+h-24;
+    s+=`<path d="M${r1(x)} ${r1(base)} L${r1(x+w)} ${r1(base)} L${r1(x+w)} ${r1(base+14)} L${r1(x)} ${r1(base+14)} Z" fill="${shade(lookColor('carc'),0.9)}" stroke="${EDGE}" stroke-width="${PX(.6)}"/>`;
+    for(let i=0;i<n;i++){const sx=x+15+step*i+step*0.12, sw=step*0.76, sh=Math.min(110,h*0.45);
+      s+=`<path d="M${r1(sx)} ${r1(base)} v${r1(-sh*0.55)} q0 ${r1(-sh*0.45)} ${r1(sw*0.25)} ${r1(-sh*0.45)} h${r1(sw*0.25)} q${r1(sw*0.5)} 0 ${r1(sw*0.5)} ${r1(sh)} Z" fill="#7b8085" stroke="#4f5550" stroke-width="${PX(.6)}"/>`;}
+  }
+  if(sg.led){ s=`<rect x="${r1(x)}" y="${r1(y)}" width="${r1(w)}" height="${r1(Math.min(h*0.75,420))}" fill="url(#gLed)"/>`+s+
+    `<rect x="${r1(x+10)}" y="${r1(y)}" width="${r1(w-20)}" height="9" rx="3" fill="#fff4c6" stroke="#e5c766" stroke-width="${PX(.5)}"/>`; }
+  return s;
+}
+function robeDoors(it,X,Y,W,H,open){
+  const fin=FINISH[S.finish], P=(a,b)=>r1(a)+' '+r1(b);
+  if(it.doors==='hinged'){
+    let s='';
+    for(const [a,b,hg] of leavesOf(it)){const x=X+a+1.5, w=b-a-3, L=hg==='L';
+      if(open){s+=`<rect x="${r1(x)}" y="${r1(Y)}" width="${r1(w)}" height="${r1(H)}" fill="none" stroke="#2448c9" stroke-opacity=".45" stroke-width="${PX(1)}" stroke-dasharray="${PX(5)} ${PX(4)}" pointer-events="none"/>`; continue;}
+      s+=lookPaint('front',x,Y,w,H)+`<rect x="${r1(x)}" y="${r1(Y)}" width="${r1(w)}" height="${r1(H)}" fill="url(#gGloss)" stroke="${EDGE}" stroke-width="${PX(1)}"/>`;
+      s+=`<path class="rm-open" d="M${P(L?x:x+w,Y)} L${P(L?x+w:x,Y+H/2)} L${P(L?x:x+w,Y+H)}" stroke-width="${PX(.9)}" stroke-dasharray="${PX(4)} ${PX(3)}"/>`;
+      if(S.handle!=='gola'){const hx=L?x+w-45:x+45, hy=Y+H+S.dims.plinth-1050;
+        s+=S.handle==='knob'?knob(hx,hy):metalV(hx,hy,Math.min(300,H*0.18));}
+    }
+    return s;
+  }
+  if(it.doors==='sliding'){
+    const ps=panelsOf(it); let s='';
+    for(const layer of [0,1]) for(const [a,b,f] of ps){ if(f!==layer)continue; const x=X+a, w=b-a;
+      if(open){s+=`<rect x="${r1(x)}" y="${r1(Y)}" width="${r1(w)}" height="${r1(H)}" fill="none" stroke="#2448c9" stroke-opacity=".45" stroke-width="${PX(1)}" stroke-dasharray="${PX(5)} ${PX(4)}" pointer-events="none"/>`; continue;}
+      s+=lookPaint('front',x,Y,w,H)+`<rect x="${r1(x)}" y="${r1(Y)}" width="${r1(w)}" height="${r1(H)}" fill="url(#gGloss)" stroke="${EDGE}" stroke-width="${PX(1)}"/>`+
+        (f?`<rect x="${r1(x-14)}" y="${r1(Y)}" width="14" height="${r1(H)}" fill="#000" opacity=".12"/>`:'')+
+        `<rect x="${r1(x)}" y="${r1(Y)}" width="14" height="${r1(H)}" fill="url(#gMetalV)"/><rect x="${r1(x+w-14)}" y="${r1(Y)}" width="14" height="${r1(H)}" fill="url(#gMetalV)"/>`;
+      const my=Y+H*0.5, a1=x+w*0.3, a2=x+w*0.7, ah=Math.min(40,w*0.05);
+      s+=`<path class="rm-open" d="M${P(a1,my)} H${r1(a2)} M${P(a1+ah,my-ah)} L${P(a1,my)} L${P(a1+ah,my+ah)} M${P(a2-ah,my-ah)} L${P(a2,my)} L${P(a2-ah,my+ah)}" stroke-width="${PX(.9)}" stroke-dasharray="${PX(4)} ${PX(3)}"/>`;
+    }
+    return s;
+  }
+  return '';
+}
+function robeSVG(it,X,Y,W,H){
+  const cc=lookColor('carc'), open=robeOpen(it), xs=colX(it);
+  let s=lookPaint('carc',X,Y,W,H)+`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="none" stroke="${EDGE}" stroke-width="${PX(1)}"/>`;
+  if(open||it.doors==='none'){
+    xs.forEach(([a,b],ci)=>{
+      const x0=X+a, w=b-a, mm=compMM(it,ci); let y=Y+BD;
+      s+=`<rect x="${r1(x0)}" y="${r1(Y+BD)}" width="${r1(w)}" height="${r1(H-2*BD)}" fill="${shade(cc,0.84)}" stroke="${EDGE}" stroke-width="${PX(.6)}"/>`+
+        `<rect x="${r1(x0)}" y="${r1(Y+BD)}" width="${r1(w)}" height="${r1(Math.min(120,H*0.06))}" fill="url(#gUnder)"/>`;
+      it.cols[ci].segs.forEach((sg,i)=>{const h=mm[i];
+        s+=compSVG(sg,x0,y,w,h); y+=h;
+        if(i<mm.length-1){s+=`<rect x="${r1(x0)}" y="${r1(y)}" width="${r1(w)}" height="${BD}" fill="${cc}" stroke="${EDGE}" stroke-width="${PX(.6)}"/><rect x="${r1(x0)}" y="${r1(y+BD)}" width="${r1(w)}" height="30" fill="url(#gUnder)"/>`; y+=BD;}
+      });
+    });
+    if(it.id===U.sel&&xs[U.col||0]){const [a,b]=xs[U.col||0]; s+=`<rect x="${r1(X+a+PX(2))}" y="${r1(Y+BD+PX(2))}" width="${r1(b-a-PX(4))}" height="${r1(H-2*BD-PX(4))}" fill="none" stroke="#2448c9" stroke-width="${PX(1.6)}" stroke-dasharray="${PX(6)} ${PX(4)}" pointer-events="none"/>`;}
+  }
+  if(it.doors!=='none') s+=robeDoors(it,X,Y,W,H,open);
+  return s;
+}
+function robeIcon(it){
+  const W=it.w, H=hOf(it), ln=(a,b,c,d)=>`<line x1="${r1(a)}" y1="${r1(b)}" x2="${r1(c)}" y2="${r1(d)}"/>`;
+  let s=`<rect x="0" y="0" width="${W}" height="${H}"/>`+ln(W*0.06,H,W*0.06,H*1.05)+ln(W*0.94,H,W*0.94,H*1.05);
+  if(it.doors==='hinged'){for(const [a,b,hg] of leavesOf(it)){ if(a>1)s+=ln(a,0,a,H); const hx=hg==='L'?b-W*0.05:a+W*0.05; s+=ln(hx,H*0.45,hx,H*0.58);} }
+  else if(it.doors==='sliding'){const ps=panelsOf(it); ps.forEach(([a,b],i)=>{if(i)s+=ln(a,0,a,H)+ln(a+40,0,a+40,H);}); s+=ln(W*0.3,H*0.5,W*0.7,H*0.5);}
+  else {for(const [a,b] of colX(it)){ if(a>BD+1)s+=ln(a-BD/2,0,a-BD/2,H); for(let q=1;q<5;q++) s+=ln(a,H*q/5,b,H*q/5);} }
+  const m=Math.max(W,H*1.05)*1.12;
+  return `<svg viewBox="${r1(W/2-m/2)} ${r1(H*0.525-m/2)} ${r1(m)} ${r1(m)}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${s.replace(/<(line|rect)/g,'<$1 vector-effect="non-scaling-stroke"')}</svg>`;
+}
+function robeDesc(it){
+  let sh=0,rl=0,dr=0,so=0,led=0;
+  for(const c of it.cols){ sh+=c.segs.length-1; for(const sg of c.segs){ if(sg.k==='rail')rl++; if(sg.k==='drawers')dr+=(sg.n||2); if(sg.k==='shoes')so++; if(sg.led)led++; } }
+  const parts=[t('d_'+it.doors)+(it.doors==='sliding'?` ×${panelsOf(it).length}`:''), `${it.cols.length} ${t('sectionsS')}`];
+  if(sh>0)parts.push(`${t('rk_shelf')} ×${sh}`); if(rl)parts.push(`${t('rk_rail')} ×${rl}`); if(dr)parts.push(`${t('rk_drawers')} ×${dr}`); if(so)parts.push(`${t('rk_shoes')} ×${so}`); if(led)parts.push(`LED ×${led}`);
+  return parts.join(' · ');
+}
+function setCompMM(it,ci,i,v){
+  const mm=compMM(it,ci), n=mm.length; if(n<2)return; const A=mm.reduce((a,b)=>a+b,0);
+  v=Math.max(100,Math.min(A-100*(n-1),v)); const c=it.cols[ci], others=c.segs.reduce((a,s,j)=>j===i?a:a+s.r,0);
+  mut(()=>{c.segs[i].r=v/(A-v)*others;});
+}
+function setColW(it,ci,v){
+  const ws=colsMM(it), n=ws.length; if(n<2)return; const A=ws.reduce((a,b)=>a+b,0);
+  v=Math.max(200,Math.min(A-200*(n-1),v)); const others=it.cols.reduce((a,c,j)=>j===ci?a:a+c.r,0);
+  mut(()=>{it.cols[ci].r=v/(A-v)*others;});
+}
+function robeHTML(it){
+  const c=CAT[it.t], tg=tags()[it.id]||'', ci=Math.min(U.col||0,it.cols.length-1), col=it.cols[ci], mm=compMM(it,ci), hv=Math.round(hOf(it)), [ha,hb]=hLimits(it);
+  let h=`<div class="ihead"><div class="ic">${iconFor(it)}</div><div><h2>${tg?tg+' · ':''}${esc(nm(c))}</h2><div class="tg">${esc(t('wall'))} ${it.wall} · x ${Math.round(it.x)} · ${dimsOf(it)}${isBad(it)?` · <span style="color:var(--bad)">${esc(t('noFit'))}</span>`:''}</div></div></div>`;
+  h+=`<p class="note">${esc(t('robeHint'))}</p>`;
+  h+=`<div class="fld"><label for="in-w">${esc(t('width'))}</label>${numBox('w',it.w,'mm',50,'min="400" max="4000" step="10"')}<div class="chips">${[600,900,1200,1500,1800,2400,3000].map(v=>`<button type="button" class="chip" data-act="wpre" data-v="${v}" aria-pressed="${it.w===v}">${v}</button>`).join('')}</div></div>`;
+  h+=`<div class="fld"><label for="in-ih">${esc(t('height'))}</label>${numBox('ih',hv,'mm',10,`min="${ha}" max="${hb}" step="10"`)}<div class="chips">${hPresets(it).map(v=>`<button type="button" class="chip" data-act="hpre" data-v="${v}" aria-pressed="${hv===v}">${v}</button>`).join('')}</div></div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('depth'))}</span><div class="chips">${[350,450,560,600,650].map(v=>`<button type="button" class="chip" data-act="rdepth" data-v="${v}" aria-pressed="${dep(it)===v}">${v}</button>`).join('')}</div></div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('doorsL'))}</span><div class="seg">${['none','hinged','sliding'].map(v=>`<button type="button" data-act="rdoor" data-v="${v}" aria-pressed="${it.doors===v}">${esc(t('d_'+v))}</button>`).join('')}</div>`;
+  if(it.doors==='sliding') h+=`<div class="row"><span class="note">${esc(t('panelsL'))}</span><div class="chips">${[2,3,4].map(v=>`<button type="button" class="chip" data-act="rpanels" data-v="${v}" aria-pressed="${panelsOf(it).length===v}">${v}</button>`).join('')}</div></div>`;
+  h+=`</div>`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('sections'))}</span><div class="chips">${[1,2,3,4,5].map(v=>`<button type="button" class="chip" data-act="rcols" data-v="${v}" aria-pressed="${it.cols.length===v}">${v}</button>`).join('')}</div>`;
+  if(it.cols.length>1) h+=`<div class="row">${colsMM(it).map((w,i)=>`<div class="mm segrow" style="padding:4px 6px;display:flex;align-items:center;gap:4px"><span class="segnum">${i+1}</span><input id="rcw-${i}" type="number" data-act="rcw" data-i="${i}" value="${Math.round(w)}" style="width:58px;border:0;background:transparent;font:600 13px var(--f-mono);text-align:right" aria-label="${esc(t('section'))} ${i+1}"><span class="note">mm</span></div>`).join('')}</div>`;
+  h+=`</div><hr class="sep">`;
+  h+=`<div class="fld"><span class="lbl">${esc(t('inside'))}</span>`;
+  if(it.cols.length>1) h+=`<div class="chips"><span class="note" style="align-self:center">${esc(t('section'))}</span>${it.cols.map((_,i)=>`<button type="button" class="chip" data-act="rcolsel" data-v="${i}" aria-pressed="${i===ci}">${i+1}</button>`).join('')}</div>`;
+  h+=`<div class="chips">${Object.entries(RPRE).map(([k,p])=>`<button type="button" class="chip txt" data-act="rpre" data-v="${k}">${esc(nm(p))}</button>`).join('')}</div>`;
+  h+=`<div class="segs">`;
+  col.segs.forEach((sg,i)=>{
+    h+=`<div class="segrow"><div class="top hd"><span class="segnum">${i+1}</span><select id="rk-${i}" data-act="rk" data-i="${i}" aria-label="${esc(t('inside'))} ${i+1}">${['shelf','rail','drawers','shoes'].map(k=>`<option value="${k}" ${k===sg.k?'selected':''}>${esc(t('rk_'+k))}</option>`).join('')}</select>`+
+      `<div class="mm"><input id="rmm-${i}" type="number" data-act="rmm" data-i="${i}" value="${Math.round(mm[i])}" aria-label="${esc(t('height'))} ${i+1}" ${col.segs.length<2?'disabled':''}><span>mm</span></div>`+
+      `<button type="button" class="mini" data-act="rup" data-i="${i}" aria-label="↑" ${i===0?'disabled':''}>↑</button><button type="button" class="mini" data-act="rdn" data-i="${i}" aria-label="↓" ${i===col.segs.length-1?'disabled':''}>↓</button>`+
+      `<button type="button" class="mini x" data-act="rdel" data-i="${i}" aria-label="${esc(t('del'))}" ${col.segs.length<2?'disabled':''}>×</button></div>`+
+      `<div class="top"><button type="button" class="mini" data-act="rled" data-i="${i}" aria-pressed="${!!sg.led}">${esc(t('led'))}</button>`+
+      (sg.k==='drawers'?`<span class="note" style="margin-left:6px">${esc(t('drwN'))}</span>${[1,2,3,4].map(v=>`<button type="button" class="mini" data-act="rdcount" data-i="${i}" data-v="${v}" aria-pressed="${(sg.n||2)===v}">${v}</button>`).join('')}`:'')+`</div></div>`;
+  });
+  h+=`</div><div class="row"><button type="button" class="btn" data-act="radd" data-v="shelf">${esc(t('addShelf'))}</button><button type="button" class="btn" data-act="radd" data-v="rail">${esc(t('addRail'))}</button><button type="button" class="btn" data-act="radd" data-v="drawers">${esc(t('addDrw'))}</button><button type="button" class="btn" data-act="rledall" aria-pressed="${col.segs.every(s=>s.led)}">${esc(t('ledAll'))}</button></div></div>`;
+  h+='<hr class="sep"><div class="row">';
+  if(it.doors==='hinged') h+=`<button type="button" class="btn" data-act="mirror">${esc(t('mirror'))}</button>`;
+  h+=`<button type="button" class="btn" data-act="dup">${esc(t('dup'))}</button><button type="button" class="btn danger" data-act="del">${esc(t('del'))}</button></div>`;
+  if(activeWalls().length>1) h+=`<div class="fld"><span class="lbl">${esc(t('moveTo'))}</span><div class="chips">${activeWalls().map(w=>`<button type="button" class="chip txt" data-act="move" data-v="${w}" aria-pressed="${it.wall===w}">${esc(t('wall'))} ${w}</button>`).join('')}</div></div>`;
+  return h;
+}
+function robeClick(act,it,i,v){
+  const ci=Math.min(U.col||0,it.cols.length-1), col=it.cols[ci];
+  switch(act){
+    case 'rdoor': mut(()=>{it.doors=v;}); return true;
+    case 'rpanels': mut(()=>{it.panels=+v;}); return true;
+    case 'rdepth': mut(()=>{it.d=+v;}); return true;
+    case 'rcols': mut(()=>{const n=+v; while(it.cols.length<n) it.cols.push({r:1,hg:it.cols.length%2?'R':'L',segs:RPRE.shelves.s()}); it.cols.length=n; it.cols.forEach(c=>c.r=1); U.col=Math.min(U.col||0,n-1);}); return true;
+    case 'rcolsel': U.col=+v; renderElev(); renderInspector(); return true;
+    case 'rpre': mut(()=>{col.segs=RPRE[v].s();}); return true;
+    case 'rup': if(i>0)mut(()=>{const s=col.segs; [s[i-1],s[i]]=[s[i],s[i-1]];}); return true;
+    case 'rdn': if(i<col.segs.length-1)mut(()=>{const s=col.segs; [s[i+1],s[i]]=[s[i],s[i+1]];}); return true;
+    case 'rdel': if(col.segs.length>1)mut(()=>{col.segs.splice(i,1);}); return true;
+    case 'rled': mut(()=>{col.segs[i].led=!col.segs[i].led;}); return true;
+    case 'rledall': mut(()=>{const on=!col.segs.every(s=>s.led); col.segs.forEach(s=>s.led=on);}); return true;
+    case 'rdcount': mut(()=>{col.segs[i].n=+v;}); return true;
+    case 'radd': mut(()=>{
+      const mm=compMM(it,ci); let j=0; mm.forEach((h,k)=>{if(h>mm[j])j=k;});
+      const big=col.segs[j], half=big.r/2; big.r=half;
+      const ns={k:v,r:half}; if(v==='drawers')ns.n=2;
+      if(v==='drawers') col.segs.push(ns); else col.segs.splice(j+1,0,ns);
+    }); return true;
+  }
+  return false;
+}
 
 /* ---------------- appearance (as Builder's "Išvaizda 3D vaizde") ----------------
    S.look[m] = {color, tex:<id>, fit, mm, rot, ar, avg} for m in front | carc | top.
@@ -684,6 +879,7 @@ function defsSVG(){
   `<linearGradient id="gMetalV" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e9ebee"/><stop offset=".5" stop-color="#a9aeb4"/><stop offset="1" stop-color="#7d838a"/></linearGradient>`+
   `<linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3f46"/><stop offset=".38" stop-color="#16191c"/><stop offset=".40" stop-color="#2b3036"/><stop offset=".55" stop-color="#121417"/><stop offset="1" stop-color="#0b0c0e"/></linearGradient>`+
   `<linearGradient id="gUnder" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></linearGradient>`+
+  `<linearGradient id="gLed" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe39a" stop-opacity=".8"/><stop offset=".5" stop-color="#ffe9b0" stop-opacity=".3"/><stop offset="1" stop-color="#fff2cc" stop-opacity="0"/></linearGradient>`+
   `<radialGradient id="gFloor" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>`+
   lookDefs()+`<pattern id="hatch" patternUnits="userSpaceOnUse" width="${PX(9)}" height="${PX(9)}" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="${PX(9)}" class="hatchln" stroke-width="${PX(1.2)}"/></pattern>`+
   `</defs>`;
@@ -730,6 +926,7 @@ function segSVG(sg,x,y,w,h,cf,fin){
 }
 function itemSVG(it,X,Y,W,H,floorTop){
   const fin=FINISH[S.finish], sw=PX(1);
+  if(it.layer==='robe') return robeSVG(it,X,Y,W,H);
   if(it.layer==='top'){const tc=lookColor('top'); return lookPaint('top',X,Y,W,H)+`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" fill="none" stroke="${shade(tc,0.55)}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(Y+H)}" width="${r1(W)}" height="26" fill="url(#gUnder)"/>`;}
   if(it.layer==='window'){
     let s=`<rect x="${r1(X)}" y="${r1(Y)}" width="${r1(W)}" height="${r1(H)}" class="r-frame" stroke-width="${PX(1.2)}"/>`;
@@ -768,7 +965,7 @@ function topExtras(it,X,wt){
 function legsSVG(it,X,W,yFloor){
   const d=S.dims, fin=FINISH[S.finish];
   let s=`<ellipse cx="${r1(X+W/2)}" cy="${r1(yFloor)}" rx="${r1(W*0.56)}" ry="${PX(5)}" fill="url(#gFloor)"/>`;
-  if(it.t==='base_dw') return s+`<rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="${lookColor('front')}" stroke="${EDGE}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="#000" opacity=".12"/>`;
+  if(it.t==='base_dw'||it.layer==='robe') return s+`<rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="${lookColor('front')}" stroke="${EDGE}" stroke-width="${PX(.8)}"/><rect x="${r1(X)}" y="${r1(yFloor-d.plinth)}" width="${r1(W)}" height="${d.plinth}" fill="#000" opacity=".12"/>`;
   for(const lx of [55,W-55]) s+=`<rect x="${r1(X+lx-20)}" y="${r1(yFloor-d.plinth)}" width="40" height="${d.plinth}" fill="#2d3034"/><rect x="${r1(X+lx-20)}" y="${r1(yFloor-d.plinth)}" width="14" height="${d.plinth}" fill="#fff" opacity=".08"/><rect x="${r1(X+lx-28)}" y="${r1(yFloor-10)}" width="56" height="10" rx="3" fill="#1f2124"/>`;
   return s;
 }
@@ -778,6 +975,7 @@ function worktopSVG(a,b,yTop){
 }
 /* line pictograms for the palette (as in the Builder's "Pridėti spintelę" list) */
 function lineIcon(it){
+  if(it.layer==='robe') return robeIcon(it);
   if(it.layer==='top'){const W=1200; return `<svg viewBox="-60 -420 1320 1320" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><rect x="0" y="0" width="${W}" height="90" vector-effect="non-scaling-stroke"/><path d="M60 90 V560 M600 90 V560 M1140 90 V560" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/></svg>`;}
   const [y0,y1]=vert(it), W=it.w, H=y1-y0, c=CAT[it.t]||{};
   const ln=(x1,y1_,x2,y2)=>`<line x1="${r1(x1)}" y1="${r1(y1_)}" x2="${r1(x2)}" y2="${r1(y2)}"/>`;
@@ -803,7 +1001,7 @@ function lineIcon(it){
   return `<svg viewBox="${r1(-pad-(m-vw)/2)} ${r1(top-pad-(m-vh)/2)} ${r1(m)} ${r1(m)}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" style="overflow:visible"><g>${s.replace(/<(line|rect|path)/g,'<$1 vector-effect="non-scaling-stroke"')}</g></svg>`;
 }
 function iconSVG(type){return lineIcon(mk(type,'A',0));}
-function dimsOf(it){const [y0,y1]=vert(it); const h=Math.round(y1-y0); if(it.layer==='top') return `${it.w}×${h}×620`; return it.layer==='window'||it.layer==='door'?`${it.w}×${h}`:`${it.w}×${h}×${DEPTH[it.layer]}`;}
+function dimsOf(it){const [y0,y1]=vert(it); const h=Math.round(y1-y0); if(it.layer==='top') return `${it.w}×${h}×620`; return it.layer==='window'||it.layer==='door'?`${it.w}×${h}`:`${it.w}×${h}×${dep(it)}`;}
 /* dimension lines — Builder style: a line with ticks, figures underneath */
 function dimH(a,b,y,label,fs,gap){
   const tk=fs*0.38; let s=`<g class="dim${gap?' gap':''}"><line x1="${r1(a)}" y1="${r1(y)}" x2="${r1(b)}" y2="${r1(y)}"/><line x1="${r1(a)}" y1="${r1(y-tk)}" x2="${r1(a)}" y2="${r1(y+tk)}"/><line x1="${r1(b)}" y1="${r1(y-tk)}" x2="${r1(b)}" y2="${r1(y+tk)}"/>`;
@@ -855,7 +1053,7 @@ function renderElev(){
   for(const it of order){
     const [y0,y1]=vert(it), X=it.x, Y=yOf(y1), W=it.w, Hh=y1-y0, sel=it.id===U.sel;
     let g=`<g class="it${sel?' sel':''}" data-id="${it.id}">`;
-    if(it.layer==='base'||it.layer==='tall') g+=legsSVG(it,X,W,H);
+    if(it.layer==='base'||it.layer==='tall'||it.layer==='robe') g+=legsSVG(it,X,W,H);
     g+=itemSVG(it,X,Y,W,Hh,y1);
     if(isBad(it)) g+=`<rect class="badbox" x="${X}" y="${r1(Y)}" width="${W}" height="${Hh}"/>`;
     g+=`<rect x="${X}" y="${r1(Y)}" width="${W}" height="${Hh}" fill="transparent"/>`;
@@ -863,7 +1061,7 @@ function renderElev(){
     g+='</g>';
     s+=g;
     if(tg[it.id]&&W/K>24){const cx=X+W/2, cy=Y+Math.min(PX(18),Hh/2), rr=PX(9); nums+=`<g class="it${sel?' sel':''}" data-id="${it.id}"><circle class="rm-no" cx="${r1(cx)}" cy="${r1(cy)}" r="${r1(rr)}"/><text class="rm-not" x="${r1(cx)}" y="${r1(cy+PX(3.6))}" font-size="${PX(10.5)}" text-anchor="middle">${tg[it.id]}</text></g>`;}
-    if(sel){const ex=(it.layer==='base'||it.layer==='tall')?d.plinth:0; selS=`<rect class="selbox" x="${r1(X-sw*1.2)}" y="${r1(Y-sw*1.2)}" width="${r1(W+sw*2.4)}" height="${r1(Hh+ex+sw*2.4)}" rx="${r1(sw)}" pointer-events="none"/>`;}
+    if(sel){const ex=(it.layer==='base'||it.layer==='tall'||it.layer==='robe')?d.plinth:0; selS=`<rect class="selbox" x="${r1(X-sw*1.2)}" y="${r1(Y-sw*1.2)}" width="${r1(W+sw*2.4)}" height="${r1(Hh+ex+sw*2.4)}" rx="${r1(sw)}" pointer-events="none"/>`;}
   }
   for(const it of items) if(it.layer==='base') s+=topExtras(it,it.x,yOf(surfaceTop(it)));
   s+=nums+selS;
@@ -918,6 +1116,7 @@ function valueChips(it,fs,wtY){
   else if(it.layer==='top') row=Y-fs*1.7;
   else if(it.layer==='wall') row=Y+Hh+(c.hood?95:0)+fs*1.5;
   else if(it.layer==='window') row=Y+fs*1.7;
+  else if(it.layer==='robe') row=Y+Hh+S.dims.plinth*0.5;
   else row=Y+fs*3.2;
   let s='<g class="vchips">';
   const {lref,rref}=gapRefs(it), off=10*K, coll=isBad(it);
@@ -933,7 +1132,10 @@ function valueChips(it,fs,wtY){
     mm.forEach((h,i)=>{ if(h>fs*1.4) s+=chipSVG(X+fs*0.6,y+h/2,h,'seg',i,'start',fs,false); y+=h+4; });
   }
   const side=X+fs*0.6;
-  if(it.layer==='wall'||it.layer==='base'||it.layer==='tall') s+=chipSVG(X+W-fs*0.6,Y+Math.min(Hh/2,fs*1.6+Hh*0.25),Hh,'h',null,'end',fs,false);
+  if(it.cols){const xs=colX(it), ws=colsMM(it);
+    if(xs.length>1) xs.forEach(([a,b],ci)=>{s+=chipSVG(X+(a+b)/2,Y+Hh-BD-fs*1.3,ws[ci],'colw',ci,'middle',fs,true);});
+    if(robeOpen(it)){const ci=Math.min(U.col||0,xs.length-1), a=xs[ci][0], mm=compMM(it,ci); let y=Y+BD; mm.forEach((h,i)=>{ if(h>fs*1.6) s+=chipSVG(X+a+fs*0.6,y+h/2,h,'cseg',ci*100+i,'start',fs,false); y+=h+BD;});}}
+  if(it.layer==='wall'||it.layer==='base'||it.layer==='tall'||it.layer==='robe') s+=chipSVG(X+W-fs*0.6,Y+Math.min(Hh/2,fs*1.6+Hh*0.25),Hh,'h',null,'end',fs,false);
   if(it.layer==='window'){ s+=chipSVG(side,Y+Hh/2,Hh,'winh',null,'start',fs,false); s+=chipSVG(X+W/2,Y+Hh+32+fs*1.1,it.y0,'sill',null,'middle',fs,true); }
   if(it.layer==='door') s+=chipSVG(side,Y+Hh/2,Hh,'doorh',null,'start',fs,false);
   return s+'</g>';
@@ -951,7 +1153,12 @@ function handlesSVG(it){
   }
   if(it.layer==='wall') s+=hg(Y+Hh,'bot');
   if(it.layer==='window'){s+=hg(Y,'top'); s+=hg(Y+Hh,'bot');}
-  if(it.layer==='door'||it.layer==='base'||it.layer==='tall') s+=hg(Y,'top');
+  if(it.layer==='door'||it.layer==='base'||it.layer==='tall'||it.layer==='robe') s+=hg(Y,'top');
+  if(it.cols){const xs=colX(it), ci=Math.min(U.col||0,xs.length-1);
+    xs.slice(1).forEach(([a],k)=>{const x=X+a-BD/2; s+=`<g class="hdl hx" data-h="col" data-i="${k}"><rect x="${r1(x-hit/2)}" y="${r1(Y+BD)}" width="${r1(hit)}" height="${r1(Hh-2*BD)}" fill="transparent"/><rect class="grip" x="${r1(x-gw/2)}" y="${r1(Y+Hh*0.62-glv/2)}" width="${r1(gw)}" height="${r1(glv)}" rx="${r1(gw/2)}"/></g>`;});
+    if(robeOpen(it)){const [a,b]=xs[ci], mm=compMM(it,ci), gl2=Math.min((b-a)*0.4,46*K); let y=Y+BD;
+      for(let i=0;i<mm.length-1;i++){y+=mm[i]; const yc=y+BD/2; s+=`<g class="hdl hy" data-h="cseg" data-i="${ci*100+i}"><rect x="${r1(X+a+hit*0.6)}" y="${r1(yc-hit/2)}" width="${r1(Math.max(1,b-a-hit*1.2))}" height="${r1(hit)}" fill="transparent"/><rect class="grip" x="${r1(X+(a+b)/2-gl2/2)}" y="${r1(yc-gw/2)}" width="${r1(gl2)}" height="${r1(gw)}" rx="${r1(gw/2)}"/></g>`; y+=BD;}}
+  }
   s+=vg(X,'L')+vg(X+W,'R');
   return s+'</g>';
 }
@@ -988,6 +1195,10 @@ function renderPlan(){
       if(c.hob){const cu=(u0+u1)/2; for(const [du,dv] of [[-140,170],[140,170],[-140,420],[140,420]]){const [px,py]=P(w,cu+du,dv); ext+=`<circle cx="${r1(px)}" cy="${r1(py)}" r="70" fill="none" stroke="#151617" stroke-width="${r1(1.2*k)}" pointer-events="none"/>`;}}
     } else if(it.layer==='tall'){
       s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,600)}" fill="${bad?'#fde6e3':'#c9cfc8'}" stroke="${stroke}" stroke-width="${sw}"/>`+front(w,u0,u1,600,'',3);
+    } else if(it.layer==='robe'){
+      const dd=dep(it);
+      s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,dd)}" fill="${bad?'#fde6e3':'#c9cfc8'}" stroke="${stroke}" stroke-width="${sw}"/>`+front(w,u0,u1,dd,'',3)+(it.doors==='sliding'?front(w,u0,u1,dd-45,`stroke-dasharray="${r1(6*k)} ${r1(3*k)}"`,1.5):'');
+      for(const [a] of colX(it).slice(1)){const p1=P(w,u0+a-BD/2,0), p2=P(w,u0+a-BD/2,dd); s+=`<line x1="${r1(p1[0])}" y1="${r1(p1[1])}" x2="${r1(p2[0])}" y2="${r1(p2[1])}" stroke="#1b211e" stroke-width="${r1(.8*k)}" pointer-events="none"/>`;}
     } else if(it.layer==='top'){
       s+=`<polygon class="pf" data-id="${it.id}" points="${poly(w,u0,u1,0,620)}" fill="${lookColor('top')}" fill-opacity=".72" stroke="${bad?'#b4291f':shade(lookColor('top'),0.5)}" stroke-width="${sw}"/>`;
     } else if(it.layer==='wall'){
@@ -1001,9 +1212,9 @@ function renderPlan(){
         `<line class="plan-ln" x1="${r1(h0[0])}" y1="${r1(h0[1])}" x2="${r1(h1[0])}" y2="${r1(h1[1])}" stroke-width="${r1(2*k)}" pointer-events="none"/>`+
         `<path class="plan-ln" d="M${r1(h1[0])},${r1(h1[1])} A${wd},${wd} 0 0 ${sweep} ${r1(o[0])},${r1(o[1])}" stroke-width="${r1(0.9*k)}" stroke-dasharray="${r1(4*k)} ${r1(3*k)}" pointer-events="none"/>`;
     }
-    if(tg[it.id]){const v=it.layer==='wall'?175:it.layer==='tall'?300:400; const [px,py]=P(w,(u0+u1)/2,v); const rr=Math.min(9*k,it.w*0.3);
+    if(tg[it.id]){const v=it.layer==='robe'?dep(it)/2:it.layer==='wall'?175:it.layer==='tall'?300:400; const [px,py]=P(w,(u0+u1)/2,v); const rr=Math.min(9*k,it.w*0.3);
       lbl+=`<circle class="plan-no" cx="${r1(px)}" cy="${r1(py)}" r="${r1(rr)}" ${it.id===U.sel?'style="fill:#2448c9"':''} ${it.layer==='wall'?'opacity=".75"':''} pointer-events="none"/><text class="plan-tag" x="${r1(px)}" y="${r1(py+rr*0.38)}" font-size="${r1(rr*1.15)}" text-anchor="middle" pointer-events="none">${tg[it.id]}</text>`;}
-    if(it.id===U.sel){const vv=DEPTH[it.layer]||0; sel=`<polygon class="selbox" points="${poly(w,u0,u1,vv?0:-Tw,vv||0)}" pointer-events="none"/>`;}
+    if(it.id===U.sel){const vv=dep(it); sel=`<polygon class="selbox" points="${poly(w,u0,u1,vv?0:-Tw,vv||0)}" pointer-events="none"/>`;}
   }
   s+=ext+up+sel+lbl;
   s+=`<text class="plan-lbl" x="${r1(minX+fs)}" y="${r1(maxY-fs*0.8)}" font-size="${r1(fs*0.9)}" style="font-weight:400">${esc(t('planLeg'))}</text>`;
@@ -1013,7 +1224,7 @@ function renderPlan(){
 
 /* ---------------- side panels ---------------- */
 function renderCatalog(){
-  const grp=[['base','catBase'],['wall','catWall'],['tall','catTall'],['room','catRoom']];
+  const grp=S.kind==='robe'?[['robe','catRobe'],['room','catRoom']]:[['base','catBase'],['wall','catWall'],['tall','catTall'],['room','catRoom']];
   let h=`<div class="lbl" style="font-size:13px;color:var(--ink)">${esc(t('rmAdd'))}</div><p class="hint">${esc(t('dragHint'))}</p><div class="cats">`;
   for(const [g,k] of grp){
     h+=`<div class="cgroup"><h3>${esc(t(k))}</h3><div class="cgrid">`;
@@ -1035,7 +1246,10 @@ function renderTabs(){
   for(const b of document.querySelectorAll('.itabs [data-tab]')) b.setAttribute('aria-selected',b.dataset.tab===U.tab);
   for(const el of document.querySelectorAll('[data-tx]')) el.textContent=t(el.dataset.tx);
   document.documentElement.lang=U.lang;
-  document.title=t('title');
+  const isR=S.kind==='robe';
+  for(const b of document.querySelectorAll('[data-kind]')) b.setAttribute('aria-pressed',b.dataset.kind===(S.kind||'kitchen'));
+  $('.brand h1').textContent=isR?t('titleRobe'):t('title'); $('.brand .sub').textContent=isR?t('subRobe'):t('sub');
+  document.title=isR?t('titleRobe'):t('title');
 }
 const numBox=(act,val,unit,step,extra)=>`<div class="num"><button type="button" data-act="${act}" data-d="${-step}" aria-label="−${step}">−</button><input id="in-${act}" type="number" inputmode="numeric" data-act="${act}" value="${Math.round(val)}" ${extra||''}><span>${unit}</span><button type="button" data-act="${act}" data-d="${step}" aria-label="+${step}">+</button></div>`;
 function presetsFor(it){
@@ -1073,6 +1287,7 @@ function renderInspector(){
   if(U.tab==='list'){box.innerHTML=listHTML(); return;}
   const it=U.sel&&byId(U.sel);
   if(!it){box.innerHTML=`<p class="empty">${esc(t('noSel'))}</p>`; return;}
+  if(it.cols){box.innerHTML=robeHTML(it); return;}
   const c=CAT[it.t], tg=tags()[it.id]||'';
   let h=`<div class="ihead"><div class="ic">${iconFor(it)}</div><div><h2>${tg?tg+' · ':''}${esc(nm(c))}</h2><div class="tg">${esc(t('wall'))} ${it.wall} · x ${Math.round(it.x)} · ${dimsOf(it)}${isBad(it)?` · <span style="color:var(--warn)">${esc(t('noFit'))}</span>`:''}</div></div></div>`;
   const wp=it.layer==='window'?[600,900,1200,1500,1800]:it.layer==='door'?[800,900,1000]:it.layer==='top'?[600,1200,1800,2400,3000]:[300,400,450,500,600,800,900,1000,1200];
@@ -1125,16 +1340,17 @@ function roomHTML(){
   let h=`<div class="fld"><span class="lbl">${esc(t('layout'))}</span><div class="lay">${lay.map(([v,k,p])=>`<button type="button" data-act="layout" data-v="${v}" aria-pressed="${S.layout===v}"><svg viewBox="0 0 44 34" fill="none"><path d="${p}" stroke-width="4" stroke-linecap="square"/></svg>${esc(t(k))}</button>`).join('')}</div></div>`;
   h+=`<div class="fld"><span class="lbl">${esc(t('wallLen'))}</span><div class="row">${activeWalls().map(w=>`<div class="row" style="gap:6px"><b style="font:600 13px var(--font-mono);width:14px">${w}</b>${numBox('wl'+w,S.walls[w],'mm',100,'min="600" max="12000" step="10"')}</div>`).join('')}</div></div>`;
   h+=`<div class="row"><div class="fld"><label for="in-roomH">${esc(t('roomH'))}</label>${numBox('roomH',S.roomH,'mm',50,'min="2200" max="3600"')}</div></div>`;
-  h+=`<div class="fld"><label for="in-upAt">${esc(t('upAt'))}</label>${numBox('upAt',S.dims.wallBottom,'mm',10,'min="1200" max="1900"')}</div>`;
+  if(S.kind!=='robe') h+=`<div class="fld"><label for="in-upAt">${esc(t('upAt'))}</label>${numBox('upAt',S.dims.wallBottom,'mm',10,'min="1200" max="1900"')}</div>`;
   h+='<hr class="sep">';
   h+=`<div class="fld"><span class="lbl">${esc(t('lookT'))}</span><p class="note">${esc(t('lookL'))}</p>${lookBlock()}</div>`;
   h+=`<div class="fld"><span class="lbl">${esc(t('quick'))} · ${esc(t('frontColor'))}</span><div class="sw">${Object.entries(FINISH).map(([k,f])=>`<button type="button" class="swatch" data-act="fin" data-v="${k}" aria-pressed="${S.finish===k&&!lk('front')}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
-  h+=`<div class="fld"><span class="lbl">${esc(t('quick'))} · ${esc(t('worktop'))}</span><div class="sw">${Object.entries(TOPS).map(([k,f])=>`<button type="button" class="swatch" data-act="top" data-v="${k}" aria-pressed="${S.worktop===k&&!lk('top')}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
+  if(S.kind!=='robe') h+=`<div class="fld"><span class="lbl">${esc(t('quick'))} · ${esc(t('worktop'))}</span><div class="sw">${Object.entries(TOPS).map(([k,f])=>`<button type="button" class="swatch" data-act="top" data-v="${k}" aria-pressed="${S.worktop===k&&!lk('top')}"><i style="background:${f.c}"></i><span>${esc(nm(f))}</span></button>`).join('')}</div></div>`;
   h+=`<div class="fld"><span class="lbl">${esc(t('handles'))}</span><div class="seg">${['bar','knob','gola'].map(v=>`<button type="button" data-act="hdl" data-v="${v}" aria-pressed="${S.handle===v}">${esc(t('h_'+v))}</button>`).join('')}</div></div>`;
   h+=`<hr class="sep"><div class="row"><button type="button" class="btn" data-act="example">${esc(t('resetEx'))}</button><button type="button" class="btn danger" data-act="clear" id="clearBtn">${esc(t('clear'))}</button></div>`;
   return h;
 }
 function fdesc(it){
+  if(it.cols) return robeDesc(it);
   if(!it.segs) return '';
   const cnt={}; let hg='';
   for(const s of it.segs){const k=s.k; const n=k==='door'?(s.n||1):1; cnt[k]=(cnt[k]||0)+n; if(k==='door'&&s.n!==2&&!hg) hg=s.hg||'L';}
@@ -1145,25 +1361,26 @@ function fdesc(it){
 function hOf(it){const [a,b]=vert(it); return b-a;}
 function listed(){
   const tg=tags(); const out=[];
-  for(const w of activeWalls()) S.items.filter(i=>i.wall===w&&i.segs).sort((a,b)=>tg[a.id].localeCompare(tg[b.id],undefined,{numeric:true})).forEach(i=>out.push(i));
+  for(const w of activeWalls()) S.items.filter(i=>i.wall===w&&isCab(i)).sort((a,b)=>tg[a.id].localeCompare(tg[b.id],undefined,{numeric:true})).forEach(i=>out.push(i));
   return {out,tg};
 }
 function totals(){
   const {out}=listed(); let base=0,dr=0,dd=0;
-  for(const it of out){ if(it.layer==='base')base+=it.w; for(const s of it.segs){ if(s.k==='drawer')dr++; if(s.k==='door')dd+=(s.n||1); if(s.k==='lift'||s.k==='dw')dd++; } }
+  for(const it of out){ if(it.layer==='base')base+=it.w; if(it.cols){for(const c of it.cols)for(const sg of c.segs)if(sg.k==='drawers')dr+=(sg.n||2); dd+=it.doors==='hinged'?leavesOf(it).length:it.doors==='sliding'?panelsOf(it).length:0;}
+    for(const s of it.segs||[]){ if(s.k==='drawer')dr++; if(s.k==='door')dd+=(s.n||1); if(s.k==='lift'||s.k==='dw')dd++; } }
   return {n:out.length,base,dr,dd};
 }
 function reqText(){
   const {out,tg}=listed(), c=S.contact, L={I:t('lI'),L:t('lL'),U:t('lU')};
-  const lines=[t('reqTitle'),''];
+  const lines=[t(S.kind==='robe'?'reqTitleR':'reqTitle'),''];
   if(c.name)lines.push(`${t('name')}: ${c.name}`); if(c.phone)lines.push(`${t('phone')}: ${c.phone}`); if(c.email)lines.push(`${t('email')}: ${c.email}`);
   if(c.name||c.phone||c.email)lines.push('');
   lines.push(`${t('shape')}: ${L[S.layout]} · `+activeWalls().map(w=>`${w} ${S.walls[w]} mm`).join(', ')+` · ${t('roomH')} ${S.roomH} mm`);
   const lkTxt=m=>{const l=lk(m); return l?(l.tex?t('lookTex')+' ('+lookColor(m)+')':l.color):m==='front'?nm(FINISH[S.finish]):m==='top'?nm(TOPS[S.worktop]):'';};
-  lines.push(`${t('lk_front')}: ${lkTxt('front')} · ${t('lk_carc')}: ${lkTxt('carc')||lookColor('carc')} · ${t('lk_top')}: ${lkTxt('top')} · ${t('handles')}: ${t('h_'+S.handle)}`);
+  lines.push(`${t('lk_front')}: ${lkTxt('front')} · ${t('lk_carc')}: ${lkTxt('carc')||t('carcDef')}`+(S.kind==='robe'&&!S.items.some(i=>i.layer==='top')?'':` · ${t('lk_top')}: ${lkTxt('top')}`)+` · ${t('handles')}: ${t('h_'+S.handle)}`);
   lines.push('');
   for(const it of out) lines.push(`${tg[it.id].padEnd(4)} ${nm(CAT[it.t])} · ${it.w}×${Math.round(hOf(it))} mm · ${fdesc(it)}${isBad(it)?' · '+t('noFit').toUpperCase():''}`);
-  const rooms=S.items.filter(i=>activeWalls().includes(i.wall)&&!i.segs);
+  const rooms=S.items.filter(i=>activeWalls().includes(i.wall)&&!isCab(i));
   if(rooms.length){lines.push(''); for(const r of rooms) lines.push(`${t('wall')} ${r.wall}: ${nm(CAT[r.t])} ${r.layer==='top'?dimsOf(r):r.w} mm, x ${Math.round(r.x)}${r.layer==='window'?`, ${t('sill').toLowerCase()} ${r.y0}`:''}`);}
   if(c.note){lines.push('',`${t('note').split(':')[0]}: ${c.note}`);}
   return lines.join('\n');
@@ -1171,7 +1388,7 @@ function reqText(){
 function projJSON(){
   const {out,tg}=listed();
   return JSON.stringify({app:'db-kitchen-sketch',v:1,layout:S.layout,walls:Object.fromEntries(activeWalls().map(w=>[w,S.walls[w]])),roomH:S.roomH,dims:S.dims,finish:S.finish,worktop:S.worktop,handle:S.handle,look:Object.fromEntries(LOOKS.map(m=>[m,{color:lookColor(m),texture:!!(lk(m)&&lk(m).tex)}])),contact:S.contact,
-    items:S.items.filter(i=>activeWalls().includes(i.wall)).map(i=>({tag:tg[i.id]||null,wall:i.wall,type:i.t,layer:i.layer,x:Math.round(i.x),w:i.w,h:Math.round(hOf(i)),y0:i.layer==='window'?i.y0:undefined,fronts:i.segs?i.segs.map((s,k)=>({kind:s.k,leaves:s.k==='door'?(s.n||1):undefined,hinge:s.k==='door'&&s.n!==2?(s.hg||'L'):undefined,h:Math.round(segMM(i)[k])})):undefined}))},null,1);
+    items:S.items.filter(i=>activeWalls().includes(i.wall)).map(i=>({tag:tg[i.id]||null,wall:i.wall,type:i.t,layer:i.layer,x:Math.round(i.x),w:i.w,h:Math.round(hOf(i)),y0:i.layer==='window'?i.y0:undefined,fronts:i.segs?i.segs.map((s,k)=>({kind:s.k,leaves:s.k==='door'?(s.n||1):undefined,hinge:s.k==='door'&&s.n!==2?(s.hg||'L'):undefined,h:Math.round(segMM(i)[k])})):undefined,depth:i.cols?dep(i):undefined,doors:i.doors,sections:i.cols?colsMM(i).map((w,ci)=>({w:Math.round(w),inside:i.cols[ci].segs.map((sg,k)=>({kind:sg.k,h:Math.round(compMM(i,ci)[k]),led:!!sg.led,drawers:sg.k==='drawers'?(sg.n||2):undefined}))})):undefined}))},null,1);
 }
 function listHTML(){
   const {out,tg}=listed(), tt=totals();
@@ -1235,14 +1452,14 @@ function pdUp(e){
   if(p.moved){
     if(!p.over||!p.cand)return;
     const c=p.cand;
-    mut(()=>{const it=mk(p.t,c.wall||U.wall,c.x,{w:c.w}); S.items.push(it); U.sel=it.id; U.wall=it.wall; if(it.segs)U.tab='cab';});
+    mut(()=>{const it=mk(p.t,c.wall||U.wall,c.x,{w:c.w}); if(it.cols)it.h=Math.min(it.h,S.roomH-S.dims.plinth); S.items.push(it); U.sel=it.id; U.col=0; U.wall=it.wall; if(isCab(it))U.tab='cab';});
     if(c.bad) toast(t('hitDrop'));
   } else {
     const tmp=mk(p.t,U.wall,0);
     if(tmp.layer==='top'){const bs=S.items.filter(o=>o.layer==='base'&&o.wall===U.wall); if(bs.length){const a=Math.min(...bs.map(o=>o.x)), b=Math.max(...bs.map(o=>o.x+o.w)); const o={...tmp,x:a,w:b-a}; if(!isBad(o)){mut(()=>{tmp.x=a; tmp.w=b-a; S.items.push(tmp); U.sel=tmp.id; U.tab='cab';}); return;}}}
     const sp=findSpot(tmp,appendX(tmp,U.wall),U.wall);
     if(sp==null){toast(t('noSpace')); return;}
-    mut(()=>{tmp.x=sp; S.items.push(tmp); U.sel=tmp.id; U.tab='cab';});
+    mut(()=>{tmp.x=sp; if(tmp.cols)tmp.h=Math.min(tmp.h,S.roomH-S.dims.plinth); S.items.push(tmp); U.sel=tmp.id; U.col=0; U.tab='cab';});
   }
 }
 window.addEventListener('pointermove',e=>{pdMove(e); idMove(e); rdMove(e); pmMove(e);});
@@ -1261,8 +1478,10 @@ $('#elevWrap').addEventListener('pointerdown',e=>{
   const it=byId(g.dataset.id); if(!it)return;
   const p=svgPt(svg,e.clientX,e.clientY);
   ID={id:it.id,m0:p.x,x0:it.x,cx:e.clientX,moved:false};
-  const changed=U.sel!==it.id; U.sel=it.id;
-  if(changed||U.tab!=='cab'){U.tab='cab'; renderTabs(); renderInspector(); renderElev(); renderPlan();}
+  const changed=U.sel!==it.id; let colCh=false;
+  if(it.cols){const nc=colAt(it,p.x); colCh=changed||(U.col||0)!==nc; U.col=nc;} else if(changed) U.col=0;
+  U.sel=it.id;
+  if(changed||colCh||U.tab!=='cab'){U.tab='cab'; renderTabs(); renderInspector(); renderElev(); renderPlan();}
   try{$('#elevWrap').setPointerCapture(e.pointerId);}catch(_){}
 });
 function idMove(e){
@@ -1282,6 +1501,9 @@ $('#planWrap').addEventListener('click',e=>{
 $('#wtabs').addEventListener('click',e=>{const b=e.target.closest('[data-wall]'); if(b){U.wall=b.dataset.wall; const o=U.sel&&byId(U.sel); if(o&&o.wall!==U.wall)U.sel=null; render();}});
 document.querySelector('.itabs').addEventListener('click',e=>{const b=e.target.closest('[data-tab]'); if(b){U.tab=b.dataset.tab; renderTabs(); renderInspector();}});
 document.querySelector('.top .seg').addEventListener('click',e=>{const b=e.target.closest('[data-lang]'); if(b){U.lang=b.dataset.lang; render();}});
+$('#kindSw').addEventListener('click',e=>{const b=e.target.closest('[data-kind]'); if(!b)return; const k=b.dataset.kind; if(k===(S.kind||'kitchen'))return;
+  if(S.example){snapshot(); const c=S.contact; S=defaultState(k); S.contact=c; U.sel=null; U.col=0; U.wall='A'; if(G3)G3.fitKey=''; render();}
+  else mut(()=>{S.kind=k;});});
 $('#undo').addEventListener('click',undo); $('#redo').addEventListener('click',redo);
 
 function setW(it,v){
@@ -1305,6 +1527,7 @@ insp.addEventListener('click',e=>{
     const inp=document.getElementById('in-'+act); if(inp){inp.value=(+inp.value||0)+d; inp.dispatchEvent(new Event('change',{bubbles:true}));}
     return;
   }
+  if(it&&it.cols&&robeClick(act,it,i,v))return;
   switch(act){
     case 'wpre': if(it)setW(it,+v); break;
     case 'hpre': if(it)setH(it,+v); break;
@@ -1318,7 +1541,7 @@ insp.addEventListener('click',e=>{
     case 'shg': if(it)mut(()=>{it.segs[i].hg=v;}); break;
     case 'addDrawer': if(it)mut(()=>{const avg=it.segs.reduce((a,s)=>a+s.r,0)/it.segs.length; it.segs.unshift({k:'drawer',r:Math.max(0.6,avg*0.6)});}); break;
     case 'addDoor': if(it)mut(()=>{const avg=it.segs.reduce((a,s)=>a+s.r,0)/it.segs.length; it.segs.push({k:'door',n:1,hg:'L',r:avg});}); break;
-    case 'mirror': if(it)mut(()=>{ if(it.layer==='door')it.hg=it.hg==='R'?'L':'R'; else it.segs.forEach(s=>{if(s.k==='door'&&s.n!==2)s.hg=s.hg==='R'?'L':'R';}); }); break;
+    case 'mirror': if(it)mut(()=>{ if(it.cols)it.cols.forEach(c=>c.hg=c.hg==='R'?'L':'R'); else if(it.layer==='door')it.hg=it.hg==='R'?'L':'R'; else it.segs.forEach(s=>{if(s.k==='door'&&s.n!==2)s.hg=s.hg==='R'?'L':'R';}); }); break;
     case 'dup': if(it){const c=clone(it); c.id=uid(); const sp=findSpot(c,it.x+it.w,it.wall); if(sp==null){toast(t('noSpace'));break;} mut(()=>{c.x=sp; S.items.push(c); U.sel=c.id;});} break;
     case 'del': if(it)mut(()=>{S.items=S.items.filter(o=>o.id!==it.id); U.sel=null;}); break;
     case 'move': if(it&&v!==it.wall){const sp=findSpot(it,appendX(it,v),v); if(sp==null){toast(t('noSpace'));break;} mut(()=>{it.wall=v; it.x=sp; U.wall=v;});} break;
@@ -1330,7 +1553,7 @@ insp.addEventListener('click',e=>{
     case 'lookrot': lookSet(v,l=>{l.rot=!l.rot;}); break;
     case 'lookrm': lookSet(v,l=>{delete l.tex; l.color=''; delete l.avg;}); break;
     case 'hdl': mut(()=>{S.handle=v;}); break;
-    case 'example': snapshot(); S=defaultState(); S.contact=JSON.parse(U.undo[U.undo.length-1]).contact||S.contact; U.sel=null; U.wall='A'; render(); break;
+    case 'example': snapshot(); S=defaultState(S.kind); S.contact=JSON.parse(U.undo[U.undo.length-1]).contact||S.contact; U.sel=null; U.wall='A'; render(); break;
     case 'clear':
       if(!b.classList.contains('armed')){b.classList.add('armed'); b.textContent=t('sure'); setTimeout(()=>{if(b.isConnected){b.classList.remove('armed'); b.textContent=t('clear');}},3000); break;}
       mut(()=>{S.items=[]; U.sel=null;}); break;
@@ -1350,6 +1573,10 @@ insp.addEventListener('change',e=>{
   if(act==='sill'&&it){mut(()=>{it.y0=Math.max(0,Math.min(2400,Math.round(v)));}); return;}
   if(act==='winh'&&it){mut(()=>{it.h=Math.max(300,Math.min(2600,Math.round(v)));}); return;}
   if(act==='doorh'&&it){mut(()=>{it.h=Math.max(1800,Math.min(2600,Math.round(v)));}); return;}
+  if(it&&it.cols&&(act==='rk'||act==='rmm'||act==='rcw')){const ci=Math.min(U.col||0,it.cols.length-1), col=it.cols[ci];
+    if(act==='rk') mut(()=>{col.segs[i].k=el.value; if(el.value==='drawers')col.segs[i].n=col.segs[i].n||2;});
+    else if(act==='rmm') setCompMM(it,ci,i,v); else setColW(it,i,v);
+    return;}
   if(act==='sk'&&it){mut(()=>{const s=it.segs[i]; s.k=el.value; if(s.k==='door'){s.n=s.n||1; s.hg=s.hg||'L';}}); return;}
   if(act==='smm'&&it){setSegMM(it,i,v); return;}
   if(act.startsWith('wl')){const w=act.slice(2); mut(()=>{S.walls[w]=Math.max(600,Math.min(12000,Math.round(v)||S.walls[w])); for(const o of S.items) if(o.wall===w&&o.x+o.w>S.walls[w]){const sp=findSpot(o,o.x,w); if(sp!=null)o.x=sp;}}); return;}
@@ -1378,7 +1605,7 @@ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>{renderEl
 const STDW=[300,400,450,500,600,800,900,1000,1200];
 const WSTD=[360,580,720,900];
 let RD=null;
-function limW(it){return it.layer==='window'?[300,4000]:it.layer==='door'?[600,1400]:it.layer==='top'?[200,6000]:[150,1500];}
+function limW(it){return it.layer==='window'?[300,4000]:it.layer==='door'?[600,1400]:it.layer==='top'?[200,6000]:it.layer==='robe'?[400,4000]:[150,1500];}
 function neigh(it){let iv=[]; for(const o of OCC[it.layer]) iv=iv.concat(intervals(it.wall,o,it.id)); return iv;}
 function edgesOn(it){const c=[]; for(const o of S.items) if(o.wall===it.wall&&o.id!==it.id) c.push(o.x,o.x+o.w); for(const k of corners(it.wall)) c.push(k.a,k.b); return c;}
 function nearest(v,c,tol){let b=null,bd=tol; for(const x of c){const d=Math.abs(x-v); if(d<=bd){bd=d;b=x;}} return b;}
@@ -1387,7 +1614,9 @@ function startResize(e,hd){
   const h=hd.dataset.h, it=h==='wall'?null:byId(U.sel);
   if(h!=='wall'&&!it)return;
   RD={h,i:+hd.dataset.i,id:it&&it.id,cx:e.clientX,cy:e.clientY,k:K,moved:false,L0:S.walls[U.wall],wall:U.wall};
-  if(it){RD.x0=it.x; RD.w0=it.w; RD.h0=(it.layer==='window'||it.layer==='door')?it.h:Math.round(hOf(it)); RD.y00=it.y0; if(it.segs){RD.mm0=segMM(it); RD.r0=it.segs.map(q=>q.r);}}
+  if(it){RD.x0=it.x; RD.w0=it.w; RD.h0=(it.layer==='window'||it.layer==='door')?it.h:Math.round(hOf(it)); RD.y00=it.y0; if(it.segs){RD.mm0=segMM(it); RD.r0=it.segs.map(q=>q.r);}
+    if(it.cols&&h==='cseg'){const ci=Math.floor(RD.i/100); RD.mm0=compMM(it,ci); RD.r0=it.cols[ci].segs.map(q=>q.r);}
+    if(it.cols&&h==='col'){RD.cw0=colsMM(it); RD.cr0=it.cols.map(c=>c.r);}}
   try{$('#elevWrap').setPointerCapture(e.pointerId);}catch(_){}
   e.preventDefault();
 }
@@ -1426,7 +1655,17 @@ function rdMove(e){
     } else if(RD.h==='bot'&&it.layer==='window'){
       const top=RD.y00+RD.h0; let y0=Math.round((RD.y00-dy)/10)*10; y0=Math.max(0,Math.min(top-300,y0));
       it.y0=y0; it.h=top-y0; label=`${t('sill')}: ${it.y0} mm`;
-    } else if(RD.h==='top'&&(it.layer==='base'||it.layer==='tall')){
+    } else if(RD.h==='cseg'){
+      const ci=Math.floor(RD.i/100), i=RD.i%100, a=RD.mm0[i], b=RD.mm0[i+1], tot=a+b;
+      let hi=Math.round((a+dy)/10)*10; hi=Math.max(100,Math.min(tot-100,hi)); const hj=tot-hi, rs=RD.r0[i]+RD.r0[i+1];
+      it.cols[ci].segs[i].r=rs*hi/tot; it.cols[ci].segs[i+1].r=rs*hj/tot;
+      label=`${i+1}: ${Math.round(hi)} · ${i+2}: ${Math.round(hj)} mm`;
+    } else if(RD.h==='col'){
+      const i=RD.i, a=RD.cw0[i], b=RD.cw0[i+1], tot=a+b;
+      let wi=Math.round((a+dx)/10)*10; wi=Math.max(200,Math.min(tot-200,wi)); const wj=tot-wi, rs=RD.cr0[i]+RD.cr0[i+1];
+      it.cols[i].r=rs*wi/tot; it.cols[i+1].r=rs*wj/tot;
+      label=`${t('section')} ${i+1}: ${Math.round(wi)} · ${i+2}: ${Math.round(wj)} mm`;
+    } else if(RD.h==='top'&&(it.layer==='base'||it.layer==='tall'||it.layer==='robe')){
       const [a,b]=hLimits(it); let h=RD.h0-dy; const sn=nearest(h,hPresets(it),Math.max(20,6*RD.k)); h=sn!=null?sn:Math.round(h/10)*10;
       it.h=Math.max(a,Math.min(b,h)); label=`${t('height')}: ${it.h} mm`;
     } else if(RD.h==='top'){
@@ -1466,7 +1705,7 @@ function pmMove(e){
   it.x=nx; renderPlan(); if(U.view==='wall'){renderTabs(); renderElev();}
   tipL(e,dragInfo(it,sn.why));
 }
-function pmUp(){if(!PM)return; const m=PM.moved, it=byId(PM.id); PM=null; tipL(null); if(m){S.example=false; U.tab=it&&it.segs?'cab':U.tab; render(); if(it&&isBad(it))toast(t('hitDrop'));}}
+function pmUp(){if(!PM)return; const m=PM.moved, it=byId(PM.id); PM=null; tipL(null); if(m){S.example=false; U.tab=isCab(it)?'cab':U.tab; render(); if(it&&isBad(it))toast(t('hitDrop'));}}
 
 /* ---------------- type exact values on the drawing ---------------- */
 let ED=null;
@@ -1505,6 +1744,8 @@ function applyEd(e,v){
     case 'gapL':{const {lref}=gapRefs(it); const x=lref+Math.max(0,v); if(fitsAt(it,x)) mut(()=>{it.x=x;}); else fail(); break;}
     case 'gapR':{const {rref}=gapRefs(it); const x=rref-Math.max(0,v)-it.w; if(fitsAt(it,x)) mut(()=>{it.x=x;}); else fail(); break;}
     case 'seg': setSegMM(it,e.i,v); break;
+    case 'cseg': setCompMM(it,Math.floor(e.i/100),e.i%100,v); break;
+    case 'colw': setColW(it,e.i,v); break;
     case 'h': setH(it,v); break;
     case 'winh': mut(()=>{it.h=Math.max(300,Math.min(S.roomH-it.y0,v));}); break;
     case 'sill': mut(()=>{it.y0=Math.max(0,Math.min(S.roomH-300,v)); it.h=Math.max(300,Math.min(S.roomH-it.y0,it.h));}); break;
@@ -1593,7 +1834,7 @@ function build3D(){
   for(const it of S.items){
     if(!ws.includes(it.wall))continue;
     const g=new THREE.Group(); g.userData.id=it.id; wg[it.wall].add(g);
-    const [y0,y1]=vert(it), X=it.x, W=it.w, Hh=y1-y0, D=DEPTH[it.layer], c=CAT[it.t]||{};
+    const [y0,y1]=vert(it), X=it.x, W=it.w, Hh=y1-y0, D=dep(it), c=CAT[it.t]||{};
     if(it.layer==='top'){
       box(g,W,Hh,620,X+W/2,y0+Hh/2,310,LM('top',W,620,topm));
     } else if(it.layer==='window'){
@@ -1606,6 +1847,29 @@ function build3D(){
       const fr=mat('#F4F3EF',{roughness:.6}), lf=mat('#E2DCD1',{roughness:.7}), L=(it.hg||'L')==='L';
       box(g,W,50,60,X+W/2,Hh-25,30,fr); box(g,50,Hh,60,X+25,Hh/2,30,fr); box(g,50,Hh,60,X+W-25,Hh/2,30,fr);
       box(g,W-100,Hh-50,40,X+W/2,(Hh-50)/2,20,lf); box(g,120,16,30,L?X+W-130:X+130,1000,55,steel);
+    } else if(it.layer==='robe'){
+      const Dd=D, xs=colX(it), open=it.id===U.sel, cR=(w,h)=>LM('carc',w,h,cm), ledm=mat('#fff4cc',{emissive:0xffd77a,emissiveIntensity:1.3});
+      box(g,BD,Hh,Dd,X+BD/2,y0+Hh/2,Dd/2,cR(Dd,Hh)); box(g,BD,Hh,Dd,X+W-BD/2,y0+Hh/2,Dd/2,cR(Dd,Hh));
+      box(g,W-2*BD,BD,Dd,X+W/2,y1-BD/2,Dd/2,cR(W,Dd)); box(g,W-2*BD,BD,Dd,X+W/2,y0+BD/2,Dd/2,cR(W,Dd));
+      box(g,W-2*BD,Hh-2*BD,6,X+W/2,y0+Hh/2,3,mat(shade(cc,0.86)),false);
+      box(g,W-40,d.plinth,Dd-60,X+W/2,d.plinth/2,(Dd-60)/2,plm);
+      xs.forEach(([a,b],ci)=>{
+        if(ci>0) box(g,BD,Hh-2*BD,Dd-20,X+a-BD/2,y0+Hh/2,(Dd-20)/2,cR(Dd,Hh));
+        const mm=compMM(it,ci), w=b-a, cx=X+a+w/2; let yt=y1-BD;
+        it.cols[ci].segs.forEach((sg,i)=>{
+          const h=mm[i], yb=yt-h;
+          if(sg.led) box(g,w-20,8,24,cx,yt-4,Dd-50,ledm,false);
+          if(sg.k==='rail'){const r=new THREE.Mesh(new THREE.CylinderGeometry(12,12,w-10,14),steel); r.rotation.z=Math.PI/2; r.position.set(cx,yt-70,Dd/2); g.add(r);}
+          else if(sg.k==='drawers'){const n=Math.max(1,sg.n||2), gp=6, dh=(h-20-gp*(n-1))/n; for(let q=0;q<n;q++){const ytop=yt-20-q*(dh+gp); box(g,w-12,dh,18,cx,ytop-dh/2,Dd-60,LM('front',w-12,dh,fm)); box(g,w-30,Math.max(20,dh-40),Dd-100,cx,ytop-dh/2,(Dd-100)/2+10,cm,false);}}
+          else if(sg.k==='shoes'){const sh=new THREE.Mesh(new THREE.BoxGeometry(w-4,BD,Dd-60),cm); sh.rotation.x=0.35; sh.position.set(cx,yb+70,(Dd-60)/2+10); sh.castShadow=true; g.add(sh);}
+          if(i<mm.length-1) box(g,w,BD,Dd-20,cx,yb-BD/2,(Dd-20)/2,cR(w,Dd));
+          yt=yb-BD;
+        });
+      });
+      if(it.doors!=='none'&&!open){
+        if(it.doors==='hinged') for(const [a,b,hg] of leavesOf(it)){const w=b-a-3; box(g,w,Hh,18,X+a+1.5+w/2,y0+Hh/2,Dd+9,LM('front',w,Hh,fm)); if(S.handle!=='gola'){const hx=hg==='L'?X+b-45:X+a+45; box(g,12,Math.min(300,Hh*0.18),22,hx,1050,Dd+29,hm);}}
+        else for(const [a,b,f] of panelsOf(it)){const w=b-a; box(g,w,Hh,20,X+a+w/2,y0+Hh/2,Dd+(f?42:14),LM('front',w,Hh,fm));}
+      }
     } else {
       box(g,W-2,Hh,D-19,X+W/2,y0+Hh/2,(D-19)/2,LM('carc',D-19,Hh,cm));
       if(it.layer==='base'||it.layer==='tall') box(g,W-2,d.plinth,D-80,X+W/2,d.plinth/2,(D-80)/2,plm);
@@ -1644,7 +1908,7 @@ function build3D(){
       if(c.hood) box(g,W-60,90,D+40,X+W/2,y0-45,(D+40)/2,steel);
     }
     if(it.id===U.sel){
-      const ya=(it.layer==='base'||it.layer==='tall')?0:y0, dd=Math.max(D,60);
+      const ya=(it.layer==='base'||it.layer==='tall'||it.layer==='robe')?0:y0, dd=Math.max(D,60)+(it.layer==='robe'?50:0);
       const ln=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(W+16,(y1-ya)+16,dd+30)),new THREE.LineBasicMaterial({color:acc}));
       ln.position.set(X+W/2,(ya+y1)/2,dd/2+5); g.add(ln);
     }
@@ -1703,7 +1967,7 @@ function pick3D(e){
   const rc=new THREE.Raycaster(); rc.setFromCamera(m,G3.cam);
   for(const h of rc.intersectObjects(G3.root.children,true)){
     let o=h.object; while(o&&!o.userData.id)o=o.parent;
-    if(o){const it=byId(o.userData.id); if(it){U.sel=it.id; U.wall=it.wall; if(it.segs)U.tab='cab'; render();} return;}
+    if(o){const it=byId(o.userData.id); if(it){if(U.sel!==it.id)U.col=0; U.sel=it.id; U.wall=it.wall; if(isCab(it))U.tab='cab'; render();} return;}
   }
   if(U.sel){U.sel=null; render();}
 }
