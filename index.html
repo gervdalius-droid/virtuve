@@ -397,7 +397,7 @@ en:{lookT:'Look in the 3D views',lookL:'Upload a photo of the board decor (textu
 
 /* ---------------- catalogue ---------------- */
 const CAT={
- base_door:{g:'base',layer:'base',w:600,lt:'Spintelė su durelėmis',en:'Door cabinet',segs:[{k:'drawer',r:1},{k:'door',n:1,hg:'L',r:4}]},
+ base_door:{g:'base',layer:'base',w:600,lt:'Spintelė su durelėmis',en:'Door cabinet',segs:[{k:'door',n:1,hg:'L',r:1}]},
  base_drawers:{g:'base',layer:'base',w:600,lt:'Stalčių spintelė',en:'Drawer cabinet',segs:[{k:'drawer',r:1},{k:'drawer',r:1.5},{k:'drawer',r:1.5}]},
  base_sink:{g:'base',layer:'base',w:800,lt:'Kriauklės spintelė',en:'Sink cabinet',sink:1,segs:[{k:'door',n:2,r:1}]},
  base_oven:{g:'base',layer:'base',w:600,lt:'Orkaitė ir kaitlentė',en:'Oven and hob',hob:1,segs:[{k:'oven',r:3.2},{k:'drawer',r:1}]},
@@ -447,11 +447,11 @@ function mk(t,wall,x,extra){
 function sample(){
   return [
     mk('tall_fridge','A',0), mk('base_drawers','A',600), mk('base_oven','A',1200),
-    mk('base_door','A',1800,{segs:[{k:'drawer',r:1},{k:'door',n:1,hg:'R',r:4}]}),
+    mk('base_door','A',1800,{segs:[{k:'door',n:1,hg:'R',r:1}]}),
     mk('base_dw','A',2400), mk('base_sink','A',3000,{w:600}), mk('worktop','A',600,{w:3000}), mk('worktop','B',600,{w:1800}),
     mk('wall_door','A',600), mk('wall_hood','A',1200), mk('wall_door','A',1800,{segs:[{k:'door',n:1,hg:'R',r:1}]}),
     mk('wall_lift','A',2400,{w:800}), mk('wall_door','A',3200,{w:400}),
-    mk('base_door','B',600,{segs:[{k:'drawer',r:1},{k:'door',n:1,hg:'L',r:4}]}),
+    mk('base_door','B',600),
     mk('base_drawers','B',1200,{segs:[{k:'drawer',r:1},{k:'drawer',r:1}]}),
     mk('base_door','B',1800,{segs:[{k:'door',n:2,r:1}]}),
     mk('window','B',900), mk('wall_open','B',350,{w:500}), mk('wall_door','B',2100,{w:300,segs:[{k:'door',n:1,hg:'R',r:1}]})
@@ -796,7 +796,6 @@ function lineIcon(it){
       else if(sg.k==='oven'||sg.k==='mw') s+=rc(W*0.14,y+h*0.3,W*0.72,h*0.55);
       y+=h;});
     if(it.layer==='base'||it.layer==='tall'){bot=H+H*0.12; s+=ln(W*0.12,H,W*0.12,bot)+ln(W*0.88,H,W*0.88,bot);}
-    if(it.layer==='base'){top=-H*0.08; s+=ln(-W*0.03,top+hm,W*1.03,top+hm);}
     if(c.sink){top=-H*0.32; s+=`<path d="M${r1(W*0.56)} ${r1(-H*0.08)} V${r1(-H*0.27)} H${r1(W*0.42)} V${r1(-H*0.21)}"/>`;}
     if(c.hood){bot=H+H*0.25; s+=`<path d="M${r1(W*0.05)} ${r1(H)} H${r1(W*0.95)} L${r1(W*0.88)} ${r1(H*1.22)} H${r1(W*0.12)} Z"/>`;}
   }
